@@ -270,7 +270,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/ChatGPT_Homepage.png"
+                            src="assets/img/ChatGPT_home1.png"
                             alt="Nexora ChatGPT social platform homepage"
                             loading="lazy"
                         >
@@ -331,7 +331,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/DeepSeek_Homepage.png"
+                            src="assets/img/DeepSeek_Home1.png"
                             alt="Nexus Valhalla DeepSeek social platform homepage"
                             loading="lazy"
                         >
@@ -392,7 +392,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/Claude_Homepage.png"
+                            src="assets/img/Claude_home1.png"
                             alt="RavenWarp Claude social platform homepage"
                             loading="lazy"
                         >
@@ -453,7 +453,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/CoPilot_Homepage.png"
+                            src="assets/img/CoPilot_home1.png"
                             alt="SagaSphere Microsoft Copilot social platform homepage"
                             loading="lazy"
                         >
@@ -514,7 +514,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/Gemini_Homepage.png"
+                            src="assets/img/Gemini_home1.png"
                             alt="Valkyrin Google Gemini social platform homepage"
                             loading="lazy"
                         >

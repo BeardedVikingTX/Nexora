@@ -1930,3 +1930,111 @@ strong {
 .nexora-hidden {
     display: none !important;
 }
+
+/* ============================================================
+   NEXORA VOTING INTERFACE
+   ============================================================ */
+
+.nexora-voting-form {
+    position: relative;
+}
+
+.nexora-vote-option {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+
+    min-height: 82px;
+    padding: 1rem 1.1rem;
+
+    border: 1px solid var(--nexora-border);
+    border-radius: var(--nexora-radius);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(110, 231, 255, 0.035),
+            rgba(139, 124, 255, 0.025)
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform var(--nexora-transition),
+        border-color var(--nexora-transition),
+        background var(--nexora-transition),
+        box-shadow var(--nexora-transition);
+}
+
+.nexora-vote-option:hover {
+    transform: translateY(-3px);
+
+    border-color: var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.075);
+
+    box-shadow:
+        var(--nexora-glow-primary);
+}
+
+.nexora-vote-option input {
+    width: 20px;
+    height: 20px;
+
+    accent-color: var(--nexora-primary);
+
+    flex-shrink: 0;
+}
+
+.nexora-vote-option span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+}
+
+.nexora-vote-option strong {
+    color: #ffffff;
+
+    font-family: "Orbitron", sans-serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+}
+
+.nexora-vote-option small {
+    color: var(--nexora-text-muted);
+
+    font-size: 0.85rem;
+}
+
+.nexora-vote-option:has(input:checked) {
+    border-color: var(--nexora-primary);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(110, 231, 255, 0.12),
+            rgba(139, 124, 255, 0.08)
+        );
+
+    box-shadow:
+        var(--nexora-glow-primary);
+}
+
+#nexora-vote-status {
+    min-height: 1.5rem;
+
+    color: var(--nexora-text-soft);
+
+    font-size: 0.9rem;
+}
+
+#nexora-vote-status.is-success {
+    color: var(--nexora-success);
+}
+
+#nexora-vote-status.is-error {
+    color: var(--nexora-danger);
+}
