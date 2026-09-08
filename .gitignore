@@ -1,0 +1,46 @@
+# ============================================================
+# NEXORA - SECURITY / SECRET FILES
+# ============================================================
+
+# Production configuration
+/includes/config.php
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local development
+/.idea/
+/.vscode/
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Runtime/session/cache files
+/tmp/
+/cache/
+/sessions/
+
+# Checkpoints / local state
+*.checkpoint
+.historical_checkpoint.json
+
+# Database dumps
+*.sql.gz
+*.dump
+/database/backups/
+
+# Composer
+/vendor/
+
+# Node
+/node_modules/
+
+# Temporary files
+*.tmp
+*.temp
+*.bak
+*.swp

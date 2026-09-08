@@ -29,6 +29,7 @@ if (!defined('NEXORA_BOOTSTRAPPED')) {
 */
 
 require_once __DIR__ . '/cookies.php';
+require_once __DIR__ . '/database.php';
 
 /*
 |--------------------------------------------------------------------------

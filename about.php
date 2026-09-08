@@ -481,7 +481,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-floating-image">
 
                         <img
-                            src="assets/img/media/ChatGPT_Homepage.png"
+                            src="assets/img/chatgpt_wallpaper.jpg"
                             alt="Nexora ChatGPT platform"
                             loading="lazy"
                         >
@@ -491,7 +491,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-floating-image">
 
                         <img
-                            src="assets/img/media/CoPilot_Homepage.png"
+                            src="assets/img/copilot_wallpaper.jpg"
                             alt="SagaSphere Copilot platform"
                             loading="lazy"
                         >
@@ -501,11 +501,27 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-floating-image">
 
                         <img
-                            src="assets/img/media/DeepSeek_Homepage.png"
+                            src="assets/img/deepseek_wallpaper.jpeg"
                             alt="Nexus Valhalla DeepSeek platform"
                             loading="lazy"
                         >
 
+                    </div>
+                    
+                    <div class="nexora-floating-image">
+                        <img
+                            src="assets/img/claude_wallpaper.jpeg"
+                            alt="RavenWarp Claude platform"
+                            loading="lazy"
+                        >
+                    </div>
+                    
+                    <div class="nexora-floating-image">
+                        <img
+                            src="assets/img/gemini_wallpaper.jpg"
+                            alt="Valkyrin Gemini platform"
+                            loading="lazy"
+                        >
                     </div>
 
                 </div>
@@ -571,7 +587,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/ChatGPT_Homepage.png"
+                            src="assets/img/ChatGPT_home1.png"
                             alt="Nexora ChatGPT homepage"
                             loading="lazy"
                         >
@@ -632,7 +648,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/DeepSeek_Homepage.png"
+                            src="assets/img/DeepSeek_Home1.png"
                             alt="Nexus Valhalla DeepSeek homepage"
                             loading="lazy"
                         >
@@ -692,7 +708,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/Gemini_Homepage.png"
+                            src="assets/img/Gemini_home1.png"
                             alt="Valkyrin Gemini homepage"
                             loading="lazy"
                         >
@@ -752,7 +768,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/Claude_Homepage.png"
+                            src="assets/img/Claude_home1.png"
                             alt="RavenWarp Claude homepage"
                             loading="lazy"
                         >
@@ -812,7 +828,7 @@ require_once __DIR__ . '/includes/header.php';
                     <div class="nexora-ai-image">
 
                         <img
-                            src="assets/img/media/CoPilot_Homepage.png"
+                            src="assets/img/CoPilot_home1.png"
                             alt="SagaSphere Copilot homepage"
                             loading="lazy"
                         >
