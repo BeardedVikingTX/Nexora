@@ -2038,3 +2038,581 @@ strong {
 #nexora-vote-status.is-error {
     color: var(--nexora-danger);
 }
+
+/* ============================================================
+   NEXORA CONTACT PAGE
+   ============================================================ */
+
+.nexora-contact-page {
+    overflow: hidden;
+}
+
+
+/* ------------------------------------------------------------
+   HERO
+   ------------------------------------------------------------ */
+
+.nexora-contact-hero {
+    position: relative;
+    padding: 7rem 0 6rem;
+    background:
+        radial-gradient(
+            circle at 15% 30%,
+            rgba(0, 255, 200, 0.08),
+            transparent 35%
+        ),
+        radial-gradient(
+            circle at 85% 20%,
+            rgba(120, 80, 255, 0.08),
+            transparent 35%
+        );
+}
+
+.nexora-eyebrow,
+.nexora-section-kicker {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.85;
+}
+
+.nexora-contact-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 6.5rem);
+    line-height: 0.95;
+    margin-bottom: 2rem;
+}
+
+.nexora-contact-title span {
+    display: block;
+    opacity: 0.45;
+}
+
+.nexora-contact-lead {
+    max-width: 850px;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    line-height: 1.7;
+    margin-bottom: 1rem;
+}
+
+.nexora-contact-lead-secondary {
+    max-width: 760px;
+    opacity: 0.7;
+    line-height: 1.8;
+}
+
+.nexora-contact-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(0, 255, 200, 0.25);
+    background: rgba(0, 255, 200, 0.04);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+}
+
+.nexora-status-dot,
+.nexora-social-signal span {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    background: currentColor;
+    box-shadow: 0 0 14px currentColor;
+}
+
+
+/* ------------------------------------------------------------
+   TERMINAL
+   ------------------------------------------------------------ */
+
+.nexora-contact-terminal {
+    border: 1px solid rgba(255,255,255,0.12);
+    background: rgba(0,0,0,0.35);
+    box-shadow:
+        0 25px 70px rgba(0,0,0,0.35),
+        inset 0 0 40px rgba(255,255,255,0.02);
+}
+
+.nexora-terminal-header {
+    display: flex;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+}
+
+.nexora-terminal-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 0.35rem;
+    background: currentColor;
+    opacity: 0.65;
+}
+
+.nexora-terminal-body {
+    padding: 1.5rem;
+    font-family: monospace;
+    font-size: 0.78rem;
+}
+
+.nexora-terminal-body > div:not(.terminal-cursor) {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.terminal-key {
+    opacity: 0.45;
+}
+
+.terminal-value {
+    text-align: right;
+}
+
+.terminal-online {
+    font-weight: 700;
+}
+
+.terminal-cursor {
+    margin-top: 1rem;
+    animation: nexoraCursorBlink 1s steps(2, start) infinite;
+}
+
+@keyframes nexoraCursorBlink {
+    50% {
+        opacity: 0;
+    }
+}
+
+
+/* ------------------------------------------------------------
+   CONTACT MAIN
+   ------------------------------------------------------------ */
+
+.nexora-contact-main {
+    padding: 5rem 0;
+}
+
+.nexora-contact-card,
+.nexora-contact-side-card,
+.nexora-topic-card {
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(255,255,255,0.025);
+}
+
+.nexora-contact-card {
+    padding: clamp(1.5rem, 4vw, 3rem);
+}
+
+.nexora-contact-card h2,
+.nexora-section-heading h2 {
+    font-family: 'Orbitron', sans-serif;
+    margin-bottom: 1rem;
+}
+
+.nexora-contact-card-intro {
+    opacity: 0.7;
+    line-height: 1.8;
+    margin-bottom: 2rem;
+}
+
+.nexora-contact-form .form-label {
+    font-family: 'Rajdhani', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.nexora-form-control {
+    border-radius: 0;
+    min-height: 52px;
+}
+
+.nexora-message-box {
+    min-height: 220px;
+    resize: vertical;
+}
+
+.nexora-character-counter {
+    text-align: right;
+    margin-top: 0.4rem;
+    opacity: 0.5;
+    font-size: 0.8rem;
+}
+
+.nexora-contact-consent {
+    display: flex;
+    gap: 0.9rem;
+    padding: 1rem;
+    border-left: 3px solid currentColor;
+    background: rgba(255,255,255,0.025);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.nexora-honeypot {
+    position: absolute !important;
+    left: -10000px !important;
+    width: 1px !important;
+    height: 1px !important;
+    overflow: hidden !important;
+}
+
+
+/* ------------------------------------------------------------
+   ALERTS
+   ------------------------------------------------------------ */
+
+.nexora-contact-alert {
+    padding: 1rem 1.2rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.nexora-contact-alert.is-success {
+    border-color: rgba(0,255,170,0.35);
+    background: rgba(0,255,170,0.05);
+}
+
+.nexora-contact-alert.is-error {
+    border-color: rgba(255,70,100,0.35);
+    background: rgba(255,70,100,0.05);
+}
+
+
+/* ------------------------------------------------------------
+   SIDE CARDS
+   ------------------------------------------------------------ */
+
+.nexora-contact-side {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.nexora-contact-side-card {
+    display: flex;
+    gap: 1.2rem;
+    padding: 1.5rem;
+}
+
+.nexora-side-icon {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-size: 1.15rem;
+}
+
+.nexora-side-kicker {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    margin-bottom: 0.5rem;
+}
+
+.nexora-contact-side-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+}
+
+.nexora-contact-side-card p {
+    line-height: 1.7;
+    opacity: 0.7;
+}
+
+.nexora-email-link {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    text-decoration: none;
+    word-break: break-word;
+}
+
+.nexora-location-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.nexora-location-badges span {
+    padding: 0.35rem 0.6rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
+}
+
+.nexora-security-note {
+    font-size: 0.82rem;
+}
+
+
+/* ------------------------------------------------------------
+   TOPICS
+   ------------------------------------------------------------ */
+
+.nexora-contact-topics {
+    padding: 6rem 0;
+    background: rgba(255,255,255,0.015);
+}
+
+.nexora-section-heading {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+}
+
+.nexora-section-heading p {
+    opacity: 0.65;
+}
+
+.nexora-topic-card {
+    height: 100%;
+    padding: 1.75rem;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease;
+}
+
+.nexora-topic-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255,255,255,0.2);
+}
+
+.nexora-topic-icon {
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.nexora-topic-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+}
+
+.nexora-topic-card p {
+    margin-bottom: 0;
+    opacity: 0.65;
+    line-height: 1.7;
+}
+
+
+/* ------------------------------------------------------------
+   SOCIAL
+   ------------------------------------------------------------ */
+
+.nexora-social-section {
+    padding: 6rem 0;
+}
+
+.nexora-social-section h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.nexora-social-section h2 span {
+    display: block;
+    opacity: 0.45;
+}
+
+.nexora-social-section p {
+    max-width: 800px;
+    opacity: 0.7;
+    line-height: 1.8;
+}
+
+.nexora-social-signal {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+}
+
+.nexora-social-card {
+    display: flex;
+    gap: 1.25rem;
+    height: 100%;
+    padding: 1.75rem;
+    border: 1px solid rgba(255,255,255,0.09);
+    background: rgba(255,255,255,0.02);
+    text-decoration: none;
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        background 0.25s ease;
+}
+
+.nexora-social-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.04);
+}
+
+.nexora-social-card-icon {
+    flex: 0 0 52px;
+    width: 52px;
+    height: 52px;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,0.12);
+    font-size: 1.3rem;
+}
+
+.nexora-social-platform {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+}
+
+.nexora-social-card h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1rem;
+    margin: 0.35rem 0 0.6rem;
+}
+
+.nexora-social-card p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+}
+
+.nexora-social-arrow {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+}
+
+.nexora-social-arrow i {
+    margin-left: 0.35rem;
+}
+
+
+/* ------------------------------------------------------------
+   SECURITY PANEL
+   ------------------------------------------------------------ */
+
+.nexora-contact-security {
+    padding: 5rem 0;
+}
+
+.nexora-security-panel {
+    padding: clamp(1.5rem, 5vw, 4rem);
+    border: 1px solid rgba(255,255,255,0.1);
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.04),
+            rgba(255,255,255,0.015)
+        );
+}
+
+.nexora-security-emblem {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: grid;
+    place-items: center;
+    border: 1px solid rgba(255,255,255,0.15);
+    font-size: 2.2rem;
+}
+
+.nexora-security-panel h2 {
+    font-family: 'Orbitron', sans-serif;
+}
+
+.nexora-security-panel p {
+    opacity: 0.7;
+    line-height: 1.8;
+}
+
+.nexora-pgp-card {
+    padding: 1.5rem;
+    border: 1px solid rgba(255,255,255,0.1);
+    text-align: center;
+}
+
+.nexora-pgp-card span {
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.15em;
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+}
+
+.nexora-pgp-card strong {
+    display: block;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+}
+
+.nexora-pgp-card code {
+    display: block;
+    margin-top: 0.5rem;
+}
+
+
+/* ------------------------------------------------------------
+   FINAL CTA
+   ------------------------------------------------------------ */
+
+.nexora-contact-final {
+    padding: 7rem 0;
+}
+
+.nexora-final-symbol {
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.nexora-contact-final h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(2rem, 5vw, 4rem);
+}
+
+.nexora-contact-final p {
+    max-width: 650px;
+    margin: 0 auto 2rem;
+    opacity: 0.65;
+}
+
+
+/* ------------------------------------------------------------
+   RESPONSIVE
+   ------------------------------------------------------------ */
+
+@media (max-width: 767.98px) {
+
+    .nexora-contact-hero {
+        padding: 4rem 0;
+    }
+
+    .nexora-contact-main,
+    .nexora-contact-topics,
+    .nexora-social-section {
+        padding: 4rem 0;
+    }
+
+    .nexora-social-card {
+        flex-direction: column;
+    }
+
+    .nexora-contact-side-card {
+        flex-direction: column;
+    }
+
+}

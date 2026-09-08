@@ -455,7 +455,7 @@ $currentYear = (int) date('Y');
 <!-- ===================================================== -->
 <!-- NEXORA JAVASCRIPT                                    -->
 <!-- ===================================================== -->
-
+<script src="/assets/js/contact.js" defer></script>
 <script
     src="/assets/js/functions.js"
     defer

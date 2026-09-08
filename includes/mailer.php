@@ -1,242 +1,181 @@
 <?php
 declare(strict_types=1);
 
-/*
-|--------------------------------------------------------------------------
-| Nexora Mailer
-|--------------------------------------------------------------------------
-|
-| Centralized email delivery layer.
-|
-| This initial implementation uses PHP's configured mail transport.
-| A dedicated SMTP/provider transport can be substituted later without
-| changing the application-level email calls.
-|
-|--------------------------------------------------------------------------
-*/
-
 if (!defined('NEXORA_BOOTSTRAPPED')) {
     http_response_code(403);
     exit('Forbidden');
 }
 
-
-function nexora_mail_config(): array
-{
-    return nexora_db_config()['mail'] ?? [];
-}
-
-
+/**
+ * Send a plain-text email through the server mail transport.
+ *
+ * The application address is always used as the From address.
+ * Visitor addresses are only used as Reply-To addresses.
+ */
 function nexora_send_email(
-    string $recipient,
+    string $to,
     string $subject,
-    string $htmlBody,
-    ?string $textBody = null
+    string $body,
+    ?string $replyTo = null,
+    ?string $replyToName = null
 ): bool {
 
+    /*
+     * Validate destination.
+     */
     if (
-        filter_var($recipient, FILTER_VALIDATE_EMAIL) === false
+        filter_var($to, FILTER_VALIDATE_EMAIL) === false
     ) {
+        error_log(
+            '[NEXORA MAILER] Invalid destination email address.'
+        );
+
         return false;
     }
 
-    $config = nexora_mail_config();
+    /*
+     * Prevent header injection.
+     */
+    foreach ([$to, $subject, $replyTo, $replyToName] as $headerValue) {
+
+        if (
+            $headerValue !== null
+            && (
+                str_contains($headerValue, "\r")
+                || str_contains($headerValue, "\n")
+            )
+        ) {
+            error_log(
+                '[NEXORA MAILER] Header injection attempt blocked.'
+            );
+
+            return false;
+        }
+    }
+
+    /*
+     * Load Nexora mail configuration.
+     */
+    $config = nexora_db_config();
+
+    $mailConfig = $config['mail'] ?? [];
 
     $fromEmail = (string) (
-        $config['from_email']
+        $mailConfig['from_email']
         ?? 'noreply@nexora.beardedviking.org'
     );
 
     $fromName = (string) (
-        $config['from_name']
+        $mailConfig['from_name']
         ?? 'Nexora'
     );
 
+    /*
+     * Validate configured From address.
+     */
     if (
         filter_var($fromEmail, FILTER_VALIDATE_EMAIL) === false
     ) {
+        error_log(
+            '[NEXORA MAILER] Invalid configured From address.'
+        );
+
         return false;
     }
 
-    $encodedSubject = mb_encode_mimeheader(
-        $subject,
-        'UTF-8'
-    );
+    /*
+     * Encode potentially non-ASCII display names safely.
+     */
+    $encodedFromName = 'Nexora';
 
+    if ($fromName !== '') {
+        $encodedFromName =
+            '=?UTF-8?B?'
+            . base64_encode($fromName)
+            . '?=';
+    }
+
+    /*
+     * Build mail headers.
+     */
     $headers = [];
 
     $headers[] = 'MIME-Version: 1.0';
 
-    $headers[] = 'From: '
-        . mb_encode_mimeheader($fromName, 'UTF-8')
+    $headers[] =
+        'Content-Type: text/plain; charset=UTF-8';
+
+    $headers[] =
+        'Content-Transfer-Encoding: 8bit';
+
+    $headers[] =
+        'From: '
+        . $encodedFromName
         . ' <'
         . $fromEmail
         . '>';
 
-    $headers[] = 'Reply-To: ' . $fromEmail;
-
-    $headers[] = 'Content-Type: text/html; charset=UTF-8';
-
-    $headers[] = 'X-Mailer: Nexora';
-
-    return mail(
-        $recipient,
-        $encodedSubject,
-        $htmlBody,
-        implode("\r\n", $headers)
-    );
-}
-
-
-function nexora_send_vote_confirmation(
-    string $recipient,
-    string $username,
-    string $aiName,
-    string $roundTitle
-): bool {
-
-    $safeUsername = htmlspecialchars(
-        $username,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
-
-    $safeAiName = htmlspecialchars(
-        $aiName,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
-
-    $safeRoundTitle = htmlspecialchars(
-        $roundTitle,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
-
-    $subject = 'Nexora AI Race Vote Confirmation';
-
-    $html = <<<HTML
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Nexora Vote Confirmation</title>
-</head>
-<body>
-    <h1>Nexora AI Race</h1>
-
-    <p>Hello {$safeUsername},</p>
-
-    <p>
-        Your Nexora community vote has been successfully recorded.
-    </p>
-
-    <p>
-        <strong>Voting Round:</strong>
-        {$safeRoundTitle}
-    </p>
-
-    <p>
-        <strong>Your Selection:</strong>
-        {$safeAiName}
-    </p>
-
-    <p>
-        Thank you for participating in the Nexora AI social media
-        experiment.
-    </p>
-
-    <p>
-        — Nexora Engineering
-    </p>
-</body>
-</html>
-HTML;
-
-    return nexora_send_email(
-        $recipient,
-        $subject,
-        $html
-    );
-}
-
-
-function nexora_send_engineer_vote_alert(
-    string $username,
-    string $aiName,
-    string $roundTitle
-): bool {
-
-    $config = nexora_mail_config();
-
-    $engineerEmail = (string) (
-        $config['engineer_email']
-        ?? 'info@beardedviking.org'
-    );
-
+    /*
+     * Visitor email becomes Reply-To.
+     *
+     * NEVER put an untrusted visitor address into From.
+     */
     if (
-        filter_var($engineerEmail, FILTER_VALIDATE_EMAIL) === false
+        $replyTo !== null
+        && filter_var(
+            $replyTo,
+            FILTER_VALIDATE_EMAIL
+        )
     ) {
-        return false;
+
+        if (
+            $replyToName !== null
+            && trim($replyToName) !== ''
+        ) {
+
+            $encodedReplyName =
+                '=?UTF-8?B?'
+                . base64_encode(
+                    trim($replyToName)
+                )
+                . '?=';
+
+            $headers[] =
+                'Reply-To: '
+                . $encodedReplyName
+                . ' <'
+                . $replyTo
+                . '>';
+
+        } else {
+
+            $headers[] =
+                'Reply-To: '
+                . $replyTo;
+        }
     }
 
-    $safeUsername = htmlspecialchars(
-        $username,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
+    /*
+     * Send the message.
+     */
+    try {
 
-    $safeAiName = htmlspecialchars(
-        $aiName,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
+        return mail(
+            $to,
+            $subject,
+            $body,
+            implode("\r\n", $headers)
+        );
 
-    $safeRoundTitle = htmlspecialchars(
-        $roundTitle,
-        ENT_QUOTES | ENT_SUBSTITUTE,
-        'UTF-8'
-    );
+    } catch (Throwable $exception) {
 
-    $subject = 'Nexora AI Race — New Vote Recorded';
+        error_log(
+            '[NEXORA MAILER] '
+            . get_class($exception)
+            . ': '
+            . $exception->getMessage()
+        );
 
-    $html = <<<HTML
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<title>Nexora Vote Alert</title>
-</head>
-<body>
-    <h1>Nexora AI Race — New Vote</h1>
-
-    <p>
-        A new authenticated community vote has been recorded.
-    </p>
-
-    <p>
-        <strong>User:</strong> {$safeUsername}
-    </p>
-
-    <p>
-        <strong>AI Platform:</strong> {$safeAiName}
-    </p>
-
-    <p>
-        <strong>Voting Round:</strong> {$safeRoundTitle}
-    </p>
-
-    <p>
-        The vote was recorded by the Nexora backend after
-        server-side validation.
-    </p>
-</body>
-</html>
-HTML;
-
-    return nexora_send_email(
-        $engineerEmail,
-        $subject,
-        $html
-    );
+        return false;
+    }
 }
