@@ -3,32 +3,34 @@
  * Nexora Social Platform
  * ------------------------------------------------------------
  * File: includes/cookies.php
- * Purpose: Secure session and cookie initialization
- *
- * IMPORTANT:
- * - This file must execute BEFORE any HTML/output.
- * - Session cookies contain only an opaque session identifier.
- * - Sensitive application data belongs server-side.
- * - Do NOT store passwords, tokens, private messages, or
- *   sensitive user information directly inside browser cookies.
+ * Purpose: Secure session, CSRF, and cookie lifecycle
  * ------------------------------------------------------------
  */
 
 declare(strict_types=1);
 
-/*
-|--------------------------------------------------------------------------
-| Prevent direct access
-|--------------------------------------------------------------------------
-|
-| This file is intended to be included by Nexora application files.
-| Direct browser execution should not expose application internals.
-|
-*/
 if (!defined('NEXORA_BOOTSTRAPPED')) {
     http_response_code(403);
     exit('Forbidden');
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| HTTPS Detection
+|--------------------------------------------------------------------------
+*/
+
+function nexora_is_https(): bool
+{
+    return (
+        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
+        ||
+        (isset($_SERVER['SERVER_PORT'])
+            && (int) $_SERVER['SERVER_PORT'] === 443)
+    );
+}
+
 
 /*
 |--------------------------------------------------------------------------
@@ -36,29 +38,9 @@ if (!defined('NEXORA_BOOTSTRAPPED')) {
 |--------------------------------------------------------------------------
 */
 
-if (session_status() === PHP_SESSION_NONE) {
+if (session_status() !== PHP_SESSION_ACTIVE) {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Detect HTTPS
-    |--------------------------------------------------------------------------
-    |
-    | Shared hosting environments can sometimes sit behind proxies.
-    | We still default to the safest behavior possible.
-    |
-    */
-
-    $isHttps = (
-        (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off')
-        ||
-        (isset($_SERVER['SERVER_PORT']) && (int) $_SERVER['SERVER_PORT'] === 443)
-    );
-
-    /*
-    |--------------------------------------------------------------------------
-    | Secure PHP Session Cookie
-    |--------------------------------------------------------------------------
-    */
+    $isHttps = nexora_is_https();
 
     session_name('NEXORA_SESSION');
 
@@ -71,32 +53,28 @@ if (session_status() === PHP_SESSION_NONE) {
         'samesite' => 'Lax',
     ]);
 
-    /*
-    |--------------------------------------------------------------------------
-    | Harden PHP Session Handling
-    |--------------------------------------------------------------------------
-    */
-
     ini_set('session.use_only_cookies', '1');
     ini_set('session.use_cookies', '1');
     ini_set('session.use_strict_mode', '1');
-
-    /*
-    |--------------------------------------------------------------------------
-    | Prevent Session IDs From Being Passed Through URLs
-    |--------------------------------------------------------------------------
-    */
-
     ini_set('session.use_trans_sid', '0');
 
     /*
-    |--------------------------------------------------------------------------
-    | Start Session
-    |--------------------------------------------------------------------------
-    */
+     * Prevent PHP from unnecessarily exposing the session
+     * identifier through URL-related mechanisms.
+     */
+    ini_set('session.use_strict_mode', '1');
+
+    /*
+     * Session lifetime controls.
+     *
+     * These are intentionally conservative starting values.
+     * We can later make them configurable per account type.
+     */
+    ini_set('session.gc_maxlifetime', '7200');
 
     session_start();
 }
+
 
 /*
 |--------------------------------------------------------------------------
@@ -104,81 +82,54 @@ if (session_status() === PHP_SESSION_NONE) {
 |--------------------------------------------------------------------------
 */
 
-if (!isset($_SESSION['nexora_initialized'])) {
-    $_SESSION['nexora_initialized'] = time();
-}
-
-/*
-|--------------------------------------------------------------------------
-| CSRF Protection Token
-|--------------------------------------------------------------------------
-|
-| A cryptographically secure token is generated once per session.
-|
-*/
-
 if (
-    !isset($_SESSION['csrf_token'])
+    !isset($_SESSION['nexora_initialized'])
     ||
-    !is_string($_SESSION['csrf_token'])
-    ||
-    strlen($_SESSION['csrf_token']) < 64
+    $_SESSION['nexora_initialized'] !== true
 ) {
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+    $_SESSION['nexora_initialized'] = true;
+
+    $_SESSION['nexora_created_at'] = time();
+
+    $_SESSION['nexora_last_activity'] = time();
 }
+
 
 /*
 |--------------------------------------------------------------------------
-| Session Fingerprint
+| Session Timeout
 |--------------------------------------------------------------------------
 |
-| This is NOT intended to uniquely identify a person.
-| It provides a lightweight consistency check against some forms
-| of session theft.
+| Idle timeout:
+| 2 hours.
 |
-| Do not use highly identifying information here.
+| Absolute timeout:
+| 24 hours.
 |
-*/
-
-if (!isset($_SESSION['session_fingerprint'])) {
-
-    $userAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
-
-    $_SESSION['session_fingerprint'] = hash(
-        'sha256',
-        $userAgent
-    );
-}
-
-/*
-|--------------------------------------------------------------------------
-| Basic Session Integrity Check
+| Authentication workflows can establish a new session
+| after successful login.
 |--------------------------------------------------------------------------
 */
 
-$currentUserAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
+$now = time();
 
-$currentFingerprint = hash(
-    'sha256',
-    $currentUserAgent
+$lastActivity = (int) (
+    $_SESSION['nexora_last_activity'] ?? $now
 );
 
+$createdAt = (int) (
+    $_SESSION['nexora_created_at'] ?? $now
+);
+
+$idleTimeout = 7200;
+$absoluteTimeout = 86400;
+
 if (
-    isset($_SESSION['session_fingerprint'])
-    &&
-    !hash_equals(
-        (string) $_SESSION['session_fingerprint'],
-        $currentFingerprint
-    )
+    ($now - $lastActivity) > $idleTimeout
+    ||
+    ($now - $createdAt) > $absoluteTimeout
 ) {
-    /*
-    |--------------------------------------------------------------------------
-    | Possible Session Hijacking
-    |--------------------------------------------------------------------------
-    |
-    | Destroy the session rather than trusting it.
-    |
-    */
 
     $_SESSION = [];
 
@@ -203,100 +154,189 @@ if (
     session_destroy();
 
     /*
-    |--------------------------------------------------------------------------
-    | Start a Fresh Session
-    |--------------------------------------------------------------------------
-    */
-
+     * Start a completely new anonymous session.
+     */
     session_start();
 
-    $_SESSION['nexora_initialized'] = time();
-    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
-    $_SESSION['session_fingerprint'] = $currentFingerprint;
+    $_SESSION['nexora_initialized'] = true;
+    $_SESSION['nexora_created_at'] = time();
+    $_SESSION['nexora_last_activity'] = time();
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Session Age Tracking
+| Activity Timestamp
 |--------------------------------------------------------------------------
 */
 
-if (!isset($_SESSION['created_at'])) {
-    $_SESSION['created_at'] = time();
+$_SESSION['nexora_last_activity'] = time();
+
+
+/*
+|--------------------------------------------------------------------------
+| CSRF Token
+|--------------------------------------------------------------------------
+*/
+
+if (
+    !isset($_SESSION['nexora_csrf_token'])
+    ||
+    !is_string($_SESSION['nexora_csrf_token'])
+    ||
+    strlen($_SESSION['nexora_csrf_token']) !== 64
+) {
+    $_SESSION['nexora_csrf_token'] = bin2hex(
+        random_bytes(32)
+    );
 }
 
-/*
-|--------------------------------------------------------------------------
-| Session Activity Tracking
-|--------------------------------------------------------------------------
-*/
-
-$_SESSION['last_activity'] = time();
-
-/*
-|--------------------------------------------------------------------------
-| Helper: Retrieve CSRF Token
-|--------------------------------------------------------------------------
-*/
 
 if (!function_exists('nexora_csrf_token')) {
 
     function nexora_csrf_token(): string
     {
-        return (string) ($_SESSION['csrf_token'] ?? '');
+        return (string) (
+            $_SESSION['nexora_csrf_token'] ?? ''
+        );
     }
 }
 
-/*
-|--------------------------------------------------------------------------
-| Helper: Verify CSRF Token
-|--------------------------------------------------------------------------
-*/
 
 if (!function_exists('nexora_verify_csrf')) {
 
     function nexora_verify_csrf(?string $token): bool
     {
         if (
-            $token === null ||
-            $token === '' ||
-            !isset($_SESSION['csrf_token'])
+            !is_string($token)
+            ||
+            $token === ''
+        ) {
+            return false;
+        }
+
+        $sessionToken = $_SESSION['nexora_csrf_token'] ?? '';
+
+        if (
+            !is_string($sessionToken)
+            ||
+            $sessionToken === ''
         ) {
             return false;
         }
 
         return hash_equals(
-            (string) $_SESSION['csrf_token'],
+            $sessionToken,
             $token
         );
     }
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Helper: Regenerate Session ID
+| Session Regeneration
 |--------------------------------------------------------------------------
-|
-| This should be called after authentication state changes such as:
-|
-| - Successful login
-| - Privilege escalation
-| - Password change
-| - Account recovery
-|
 */
 
 if (!function_exists('nexora_regenerate_session')) {
 
-    function nexora_regenerate_session(bool $deleteOldSession = true): bool
-    {
-        return session_regenerate_id($deleteOldSession);
+    function nexora_regenerate_session(
+        bool $deleteOldSession = true
+    ): bool {
+
+        $result = session_regenerate_id(
+            $deleteOldSession
+        );
+
+        if ($result) {
+
+            $_SESSION['nexora_last_activity'] = time();
+
+            /*
+             * Rotate CSRF token whenever the authentication/session
+             * security boundary changes.
+             */
+            $_SESSION['nexora_csrf_token'] = bin2hex(
+                random_bytes(32)
+            );
+        }
+
+        return $result;
     }
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Prevent Session Cache Issues
+| Authentication Session Reset
+|--------------------------------------------------------------------------
+*/
+
+if (!function_exists('nexora_start_authenticated_session')) {
+
+    function nexora_start_authenticated_session(
+        int $userId
+    ): void {
+
+        /*
+         * Prevent session fixation.
+         */
+        session_regenerate_id(true);
+
+        $_SESSION = [];
+
+        $_SESSION['nexora_initialized'] = true;
+        $_SESSION['nexora_created_at'] = time();
+        $_SESSION['nexora_last_activity'] = time();
+
+        $_SESSION['nexora_user_id'] = $userId;
+
+        $_SESSION['nexora_csrf_token'] = bin2hex(
+            random_bytes(32)
+        );
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication Session Destruction
+|--------------------------------------------------------------------------
+*/
+
+if (!function_exists('nexora_destroy_session')) {
+
+    function nexora_destroy_session(): void
+    {
+        $_SESSION = [];
+
+        if (ini_get('session.use_cookies')) {
+
+            $params = session_get_cookie_params();
+
+            setcookie(
+                session_name(),
+                '',
+                [
+                    'expires'  => time() - 42000,
+                    'path'     => $params['path'] ?? '/',
+                    'domain'   => $params['domain'] ?? '',
+                    'secure'   => (bool) ($params['secure'] ?? false),
+                    'httponly' => (bool) ($params['httponly'] ?? true),
+                    'samesite' => $params['samesite'] ?? 'Lax',
+                ]
+            );
+        }
+
+        session_destroy();
+    }
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Remove PHP Technology Disclosure
 |--------------------------------------------------------------------------
 */
 

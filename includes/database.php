@@ -1,22 +1,25 @@
 <?php
-declare(strict_types=1);
+/**
+ * Nexora Social Platform
+ * ------------------------------------------------------------
+ * File: includes/database.php
+ * Purpose: Centralized secure PDO database layer
+ * ------------------------------------------------------------
+ */
 
-/*
-|--------------------------------------------------------------------------
-| Nexora Database Connector
-|--------------------------------------------------------------------------
-|
-| Centralized PDO connection layer.
-|
-| All database access should ultimately pass through this file.
-|
-|--------------------------------------------------------------------------
-*/
+declare(strict_types=1);
 
 if (!defined('NEXORA_BOOTSTRAPPED')) {
     http_response_code(403);
     exit('Forbidden');
 }
+
+
+/*
+|--------------------------------------------------------------------------
+| Configuration
+|--------------------------------------------------------------------------
+*/
 
 if (!function_exists('nexora_db_config')) {
 
@@ -32,15 +35,15 @@ if (!function_exists('nexora_db_config')) {
 
         if (!is_file($configFile)) {
             throw new RuntimeException(
-                'Nexora production configuration is missing.'
+                'Nexora configuration is unavailable.'
             );
         }
 
         $loaded = require $configFile;
 
-        if (!is_array($loaded) || !isset($loaded['database'])) {
+        if (!is_array($loaded)) {
             throw new RuntimeException(
-                'Nexora database configuration is invalid.'
+                'Nexora configuration is invalid.'
             );
         }
 
@@ -53,7 +56,7 @@ if (!function_exists('nexora_db_config')) {
 
 /*
 |--------------------------------------------------------------------------
-| PDO Connection
+| Database Connection
 |--------------------------------------------------------------------------
 */
 
@@ -65,21 +68,28 @@ function nexora_db(): PDO
         return $pdo;
     }
 
-    $config = nexora_db_config()['database'];
+    $database = nexora_db_config()['database'] ?? [];
 
-    $host = (string) ($config['host'] ?? 'localhost');
-    $port = (int) ($config['port'] ?? 3306);
-    $name = (string) ($config['name'] ?? '');
-    $user = (string) ($config['username'] ?? '');
-    $pass = (string) ($config['password'] ?? '');
-    $charset = (string) ($config['charset'] ?? 'utf8mb4');
+    $host = (string) ($database['host'] ?? 'localhost');
+    $port = (int) ($database['port'] ?? 3306);
+    $name = (string) ($database['name'] ?? '');
+    $user = (string) ($database['username'] ?? '');
+    $pass = (string) ($database['password'] ?? '');
+    $charset = (string) ($database['charset'] ?? 'utf8mb4');
+
+    if ($name === '' || $user === '') {
+        throw new RuntimeException(
+            'Nexora database configuration is incomplete.'
+        );
+    }
 
     if (
-        $name === ''
-        || $user === ''
+        !preg_match('/^[a-zA-Z0-9_]+$/', $name)
+        ||
+        !preg_match('/^[a-zA-Z0-9_]+$/', $charset)
     ) {
         throw new RuntimeException(
-            'Nexora database credentials are incomplete.'
+            'Nexora database configuration contains invalid identifiers.'
         );
     }
 
@@ -91,26 +101,56 @@ function nexora_db(): PDO
         $charset
     );
 
-    $pdo = new PDO(
-        $dsn,
-        $user,
-        $pass,
-        [
-            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-            PDO::ATTR_EMULATE_PREPARES   => false,
-            PDO::ATTR_STRINGIFY_FETCHES  => false,
-            PDO::ATTR_TIMEOUT            => 10,
-        ]
-    );
+    try {
 
-    return $pdo;
+        $pdo = new PDO(
+            $dsn,
+            $user,
+            $pass,
+            [
+                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES   => false,
+                PDO::ATTR_STRINGIFY_FETCHES  => false,
+
+                /*
+                 * Fail quickly rather than allowing a broken
+                 * database connection to hang a request.
+                 */
+                PDO::ATTR_TIMEOUT => 8,
+            ]
+        );
+
+        /*
+         * Explicitly establish UTF-8 behavior.
+         */
+        $pdo->exec(
+            "SET NAMES utf8mb4 COLLATE utf8mb4_unicode_ci"
+        );
+
+        return $pdo;
+
+    } catch (PDOException $exception) {
+
+        /*
+         * Never expose database credentials, DSNs, SQL errors,
+         * usernames, or server information to visitors.
+         */
+        error_log(
+            '[NEXORA DB] Connection failure: '
+            . $exception->getMessage()
+        );
+
+        throw new RuntimeException(
+            'Nexora database service is temporarily unavailable.'
+        );
+    }
 }
 
 
 /*
 |--------------------------------------------------------------------------
-| Transaction Helpers
+| Transactions
 |--------------------------------------------------------------------------
 */
 
@@ -125,6 +165,7 @@ function nexora_db_transaction(callable $callback): mixed
     $pdo->beginTransaction();
 
     try {
+
         $result = $callback($pdo);
 
         $pdo->commit();
@@ -141,32 +182,62 @@ function nexora_db_transaction(callable $callback): mixed
     }
 }
 
+
 /*
 |--------------------------------------------------------------------------
-| Security Hash Helpers
+| Application Cryptographic Keys
 |--------------------------------------------------------------------------
 */
 
-function nexora_app_secret(): string
+function nexora_app_key(): string
 {
-    $config = nexora_db_config();
-
-    $secret = (string) (
-        $config['security']['app_secret'] ?? ''
+    $key = (string) (
+        nexora_db_config()['security']['app_key'] ?? ''
     );
 
     if (
-        $secret === ''
-        || strlen($secret) < 32
+        $key === ''
+        ||
+        strlen($key) < 64
+        ||
+        !ctype_xdigit($key)
     ) {
         throw new RuntimeException(
-            'Nexora application secret is missing or too short.'
+            'Nexora application key is unavailable.'
         );
     }
 
-    return $secret;
+    return $key;
 }
 
+
+function nexora_hash_key(): string
+{
+    $key = (string) (
+        nexora_db_config()['security']['hash_key'] ?? ''
+    );
+
+    if (
+        $key === ''
+        ||
+        strlen($key) < 64
+        ||
+        !ctype_xdigit($key)
+    ) {
+        throw new RuntimeException(
+            'Nexora hashing key is unavailable.'
+        );
+    }
+
+    return $key;
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Privacy-Preserving Identifier Hashing
+|--------------------------------------------------------------------------
+*/
 
 function nexora_hash_identifier(?string $value): ?string
 {
@@ -177,10 +248,16 @@ function nexora_hash_identifier(?string $value): ?string
     return hash_hmac(
         'sha256',
         $value,
-        nexora_app_secret()
+        nexora_hash_key()
     );
 }
 
+
+/*
+|--------------------------------------------------------------------------
+| Client Metadata
+|--------------------------------------------------------------------------
+*/
 
 function nexora_client_ip(): ?string
 {
@@ -188,7 +265,8 @@ function nexora_client_ip(): ?string
 
     if (
         !is_string($ip)
-        || filter_var($ip, FILTER_VALIDATE_IP) === false
+        ||
+        filter_var($ip, FILTER_VALIDATE_IP) === false
     ) {
         return null;
     }

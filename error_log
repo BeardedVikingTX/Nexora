@@ -1,0 +1,32 @@
+[09-Sep-2026 10:32:46 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/nav.php on line 26
+Stack trace:
+#0 /home/beardedviking/nexora.beardedviking.org/index.php(54): require_once()
+#1 {main}
+[09-Sep-2026 10:32:56 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/nav.php on line 26
+Stack trace:
+#0 /home/beardedviking/nexora.beardedviking.org/index.php(54): require_once()
+#1 {main}
+[09-Sep-2026 10:35:58 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/footer.php on line 21
+Stack trace:
+#0 {main}
+[09-Sep-2026 10:36:05 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/footer.php on line 21
+Stack trace:
+#0 {main}
+[09-Sep-2026 10:37:37 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/nav.php on line 29
+Stack trace:
+#0 /home/beardedviking/nexora.beardedviking.org/index.php(54): require_once()
+#1 {main}
+[09-Sep-2026 10:39:31 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/nav.php on line 21
+Stack trace:
+#0 /home/beardedviking/nexora.beardedviking.org/index.php(54): require_once()
+#1 {main}
+[09-Sep-2026 10:40:55 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/nav.php on line 3
+Stack trace:
+#0 /home/beardedviking/nexora.beardedviking.org/index.php(54): require_once()
+#1 {main}
+[09-Sep-2026 10:41:29 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/footer.php on line 21
+Stack trace:
+#0 {main}
+[09-Sep-2026 10:42:54 America/Chicago] PHP Fatal error:  strict_types declaration must be the very first statement in the script in /home/beardedviking/nexora.beardedviking.org/includes/footer.php on line 21
+Stack trace:
+#0 {main}

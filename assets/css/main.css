@@ -2,46 +2,185 @@
    NEXORA
    The Next Generation of Social Connection
    ============================================================
-   Main Futuristic Interface / HUD Design System
+   MAIN INTERFACE / HUD DESIGN SYSTEM
    ------------------------------------------------------------
-   Responsibilities:
-   - Global visual system
-   - Responsive layout
-   - Sci-Fi HUD components
-   - Navigation
-   - Footer
-   - Homepage sections
-   - AI comparison interface
-   - Floating media
-   - Cards / panels
-   - Accessibility states
-   - Animation system
+   Design philosophy:
+   - Futuristic without generic cyberpunk
+   - Human-readable before decorative
+   - Motion communicates state and depth
+   - Self-hosted assets
+   - Performance-conscious effects
+   - Mobile-first degradation
+   - Accessibility-aware interaction
+   - Reusable component architecture
+
+   Font assets:
+   /assets/vendors/GoogleFonts/
+
+   IMPORTANT:
+   The TTF files are source assets.
+   Do NOT rename them to WOFF/WOFF2.
+   Proper WOFF2 conversion should be performed separately.
    ============================================================ */
 
 
 /* ============================================================
-   01. ROOT DESIGN SYSTEM
+   01. LOCAL TYPOGRAPHY ENGINE
+   ============================================================ */
+
+@font-face {
+    font-family: "Orbitron";
+    src:
+        url("/assets/vendors/GoogleFonts/Orbitron/Orbitron-VariableFont_wght.ttf")
+        format("truetype");
+    font-style: normal;
+    font-weight: 400 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Space Grotesk";
+    src:
+        url("/assets/vendors/GoogleFonts/Space_Grotesk/SpaceGrotesk-VariableFont_wght.ttf")
+        format("truetype");
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Inter";
+    src:
+        url("/assets/vendors/GoogleFonts/Inter/Inter-VariableFont_opsz,wght.ttf")
+        format("truetype");
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "JetBrains Mono";
+    src:
+        url("/assets/vendors/GoogleFonts/JetBrains_Mono/JetBrainsMono-VariableFont_wght.ttf")
+        format("truetype");
+    font-style: normal;
+    font-weight: 100 800;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "IBM Plex Sans";
+    src:
+        url("/assets/vendors/GoogleFonts/IBM_Plex_Sans/IBMPlexSans-VariableFont_wdth,wght.ttf")
+        format("truetype");
+    font-style: normal;
+    font-weight: 100 700;
+    font-display: swap;
+}
+
+
+/* ============================================================
+   02. ROOT DESIGN TOKENS
    ============================================================ */
 
 :root {
+
+    /* --------------------------------------------------------
+       Typography
+       -------------------------------------------------------- */
+
+    --font-display:
+        "Orbitron",
+        system-ui,
+        sans-serif;
+
+    --font-ui:
+        "Space Grotesk",
+        system-ui,
+        sans-serif;
+
+    --font-body:
+        "Inter",
+        system-ui,
+        sans-serif;
+
+    --font-mono:
+        "JetBrains Mono",
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        monospace;
+
+    --font-technical:
+        "IBM Plex Sans",
+        system-ui,
+        sans-serif;
+
+    --font-size-body: 1rem;
+    --font-size-small: 0.875rem;
+    --font-size-micro: 0.6875rem;
+
+    --line-height-body: 1.65;
+    --line-height-heading: 1.12;
+
+    --letter-display: 0.035em;
+    --letter-ui: 0.025em;
+    --letter-mono: 0.04em;
+
+
+    /* --------------------------------------------------------
+       Core colors
+       -------------------------------------------------------- */
+
     --nexora-bg: #050812;
     --nexora-bg-deep: #02040a;
-    --nexora-bg-panel: rgba(8, 14, 27, 0.86);
-    --nexora-bg-panel-light: rgba(16, 25, 44, 0.76);
+    --nexora-bg-black: #010207;
+
+    --nexora-bg-panel:
+        rgba(8, 14, 27, 0.86);
+
+    --nexora-bg-panel-light:
+        rgba(16, 25, 44, 0.76);
+
+    --nexora-bg-elevated:
+        rgba(14, 23, 40, 0.9);
 
     --nexora-text: #e8f1ff;
     --nexora-text-soft: #a8bad4;
     --nexora-text-muted: #70839f;
+    --nexora-text-dim: #53657e;
 
     --nexora-primary: #6ee7ff;
+    --nexora-primary-soft: #9eeeff;
+
     --nexora-secondary: #8b7cff;
     --nexora-accent: #b36cff;
+
     --nexora-success: #56f39a;
     --nexora-warning: #ffd166;
     --nexora-danger: #ff5c7c;
 
-    --nexora-border: rgba(110, 231, 255, 0.22);
-    --nexora-border-strong: rgba(110, 231, 255, 0.48);
+
+    /* --------------------------------------------------------
+       Borders
+       -------------------------------------------------------- */
+
+    --nexora-border:
+        rgba(110, 231, 255, 0.22);
+
+    --nexora-border-strong:
+        rgba(110, 231, 255, 0.48);
+
+    --nexora-border-soft:
+        rgba(255, 255, 255, 0.075);
+
+    --nexora-border-dark:
+        rgba(255, 255, 255, 0.045);
+
+
+    /* --------------------------------------------------------
+       Glow system
+       -------------------------------------------------------- */
 
     --nexora-glow-primary:
         0 0 8px rgba(110, 231, 255, 0.42),
@@ -51,35 +190,116 @@
         0 0 8px rgba(139, 124, 255, 0.42),
         0 0 24px rgba(179, 108, 255, 0.18);
 
+    --nexora-glow-success:
+        0 0 8px rgba(86, 243, 154, 0.42),
+        0 0 24px rgba(86, 243, 154, 0.12);
+
+    --nexora-glow-danger:
+        0 0 8px rgba(255, 92, 124, 0.42),
+        0 0 24px rgba(255, 92, 124, 0.14);
+
+
+    /* --------------------------------------------------------
+       Shadows
+       -------------------------------------------------------- */
+
     --nexora-shadow:
         0 24px 80px rgba(0, 0, 0, 0.45);
 
+    --nexora-shadow-deep:
+        0 40px 120px rgba(0, 0, 0, 0.62);
+
+    --nexora-shadow-card:
+        0 18px 55px rgba(0, 0, 0, 0.34);
+
+
+    /* --------------------------------------------------------
+       Geometry
+       -------------------------------------------------------- */
+
+    --nexora-radius-xs: 5px;
     --nexora-radius-sm: 8px;
     --nexora-radius: 16px;
     --nexora-radius-lg: 24px;
-
-    --nexora-transition:
-        180ms cubic-bezier(.2, .8, .2, 1);
-
-    --nexora-transition-slow:
-        500ms cubic-bezier(.2, .8, .2, 1);
+    --nexora-radius-xl: 32px;
 
     --nexora-container: 1400px;
+    --nexora-nav-height: 78px;
+
+    --nexora-content-padding:
+        clamp(1rem, 3vw, 2rem);
+
+
+    /* --------------------------------------------------------
+       Motion
+       -------------------------------------------------------- */
+
+    --nexora-ease:
+        cubic-bezier(.2, .8, .2, 1);
+
+    --nexora-ease-smooth:
+        cubic-bezier(.16, 1, .3, 1);
+
+    --nexora-transition:
+        180ms var(--nexora-ease);
+
+    --nexora-transition-slow:
+        500ms var(--nexora-ease);
+
+    --nexora-transition-spring:
+        650ms var(--nexora-ease-smooth);
+
+
+    /* --------------------------------------------------------
+       Z-index architecture
+       -------------------------------------------------------- */
+
+    --z-background: 0;
+    --z-content: 10;
+    --z-navigation: 1000;
+    --z-overlay: 9000;
+    --z-cursor: 10000;
+
+
+    /* --------------------------------------------------------
+       Accessibility
+       -------------------------------------------------------- */
+
+    --focus-ring:
+        0 0 0 3px rgba(110, 231, 255, 0.18),
+        0 0 0 1px var(--nexora-primary);
 }
 
 
 /* ============================================================
-   02. GLOBAL RESET / FOUNDATION
+   03. GLOBAL RESET / BASE
    ============================================================ */
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
 html {
+    min-height: 100%;
+
     scroll-behavior: smooth;
-    background: var(--nexora-bg-deep);
+
+    background:
+        var(--nexora-bg-deep);
+
+    text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
     min-height: 100vh;
+
     margin: 0;
+
+    overflow-x: hidden;
+
     background:
         radial-gradient(
             circle at 15% 10%,
@@ -103,96 +323,88 @@ body {
             #02040a 100%
         );
 
-    color: var(--nexora-text);
-    font-family: "Rajdhani", system-ui, sans-serif;
-    overflow-x: hidden;
+    color:
+        var(--nexora-text);
+
+    font-family:
+        var(--font-body);
+
+    font-size:
+        var(--font-size-body);
+
+    line-height:
+        var(--line-height-body);
+
+    -webkit-font-smoothing:
+        antialiased;
+
+    -moz-osx-font-smoothing:
+        grayscale;
+
+    text-rendering:
+        optimizeLegibility;
 }
 
-body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9998;
-
+body::selection {
     background:
-        linear-gradient(
-            rgba(255, 255, 255, 0.018) 50%,
-            transparent 50%
-        );
+        rgba(110, 231, 255, 0.22);
 
-    background-size: 100% 4px;
-    opacity: 0.16;
-    mix-blend-mode: overlay;
-}
-
-body::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    z-index: 9997;
-
-    background:
-        radial-gradient(
-            ellipse at center,
-            transparent 48%,
-            rgba(0, 0, 0, 0.42) 100%
-        );
-}
-
-*,
-*::before,
-*::after {
-    box-sizing: border-box;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-
-a {
-    color: var(--nexora-primary);
-    text-decoration: none;
-    transition:
-        color var(--nexora-transition),
-        text-shadow var(--nexora-transition);
-}
-
-a:hover {
-    color: #ffffff;
-    text-shadow: var(--nexora-glow-primary);
-}
-
-button,
-a,
-input,
-textarea,
-select {
-    outline-offset: 4px;
+    color:
+        #ffffff;
 }
 
 ::selection {
-    background: rgba(110, 231, 255, 0.26);
-    color: #ffffff;
+    background:
+        rgba(110, 231, 255, 0.22);
+
+    color:
+        #ffffff;
 }
 
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+}
 
-/* ============================================================
-   03. TYPOGRAPHY
-   ============================================================ */
+img {
+    height: auto;
+}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.nexora-display,
-.nexora-brand {
-    font-family: "Orbitron", system-ui, sans-serif;
-    letter-spacing: 0.04em;
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+a {
+    -webkit-tap-highlight-color:
+        transparent;
+}
+
+a {
+    color:
+        inherit;
+
+    text-decoration:
+        none;
+}
+
+button {
+    border: 0;
+}
+
+p,
+ul,
+ol {
+    margin-top: 0;
+}
+
+p {
+    text-wrap: pretty;
 }
 
 h1,
@@ -201,276 +413,1267 @@ h3,
 h4,
 h5,
 h6 {
-    color: #f5f9ff;
+    margin-top: 0;
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-display);
+
+    font-weight:
+        700;
+
+    line-height:
+        var(--line-height-heading);
+
+    letter-spacing:
+        var(--letter-display);
+
+    text-wrap:
+        balance;
 }
 
-p {
-    color: var(--nexora-text-soft);
-    line-height: 1.85;
+code,
+pre,
+.nexora-mono,
+.nexora-telemetry-value {
+    font-family:
+        var(--font-mono);
 }
 
-strong {
-    color: #ffffff;
-}
-
-.nexora-display {
-    text-transform: uppercase;
-}
-
-.nexora-eyebrow {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.65rem;
-
-    margin-bottom: 1rem;
-
-    color: var(--nexora-primary);
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.22em;
-    text-transform: uppercase;
-
-    text-shadow: var(--nexora-glow-primary);
-}
-
-.nexora-eyebrow::before {
-    content: "";
-    width: 28px;
-    height: 1px;
-    background: currentColor;
-    box-shadow: 0 0 10px currentColor;
+.nexora-technical {
+    font-family:
+        var(--font-technical);
 }
 
 
 /* ============================================================
-   04. GLOBAL APP SHELL
+   04. ACCESSIBILITY / FOCUS
    ============================================================ */
 
-#nexora-app {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
+:focus-visible {
+    outline:
+        0;
+
+    box-shadow:
+        var(--focus-ring);
 }
 
-.nexora-main {
-    position: relative;
-    min-height: 70vh;
+[tabindex="-1"]:focus {
+    outline:
+        none;
+}
+
+.sr-only {
+    position:
+        absolute !important;
+
+    width:
+        1px !important;
+
+    height:
+        1px !important;
+
+    padding:
+        0 !important;
+
+    margin:
+        -1px !important;
+
+    overflow:
+        hidden !important;
+
+    clip:
+        rect(0, 0, 0, 0) !important;
+
+    white-space:
+        nowrap !important;
+
+    border:
+        0 !important;
+}
+
+
+/* ============================================================
+   05. APPLICATION SHELL
+   ============================================================ */
+
+#nexora-app,
+.nexora-app {
+    position:
+        relative;
+
+    min-height:
+        100vh;
+
+    isolation:
+        isolate;
+}
+
+.nexora-main,
+main {
+    position:
+        relative;
+
+    z-index:
+        var(--z-content);
 }
 
 .nexora-container {
-    width: min(
-        calc(100% - 2rem),
-        var(--nexora-container)
-    );
-    margin-inline: auto;
+    width:
+        min(
+            calc(100% - 2rem),
+            var(--nexora-container)
+        );
+
+    margin-inline:
+        auto;
+}
+
+.nexora-section {
+    position:
+        relative;
+
+    padding-block:
+        clamp(4rem, 8vw, 8rem);
+}
+
+.nexora-section--compact {
+    padding-block:
+        clamp(2.5rem, 5vw, 5rem);
+}
+
+.nexora-section--flush {
+    padding-block:
+        0;
 }
 
 
 /* ============================================================
-   05. NAVIGATION
+   06. AMBIENT ENVIRONMENT
    ============================================================ */
 
-.nexora-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+.nexora-environment {
+    position:
+        fixed;
 
-    min-height: 78px;
+    inset:
+        0;
+
+    z-index:
+        var(--z-background);
+
+    pointer-events:
+        none;
+
+    overflow:
+        hidden;
+
+    contain:
+        strict;
+}
+
+.nexora-environment::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        -20%;
+
+    background:
+        radial-gradient(
+            circle at 20% 30%,
+            rgba(110, 231, 255, 0.06),
+            transparent 24%
+        ),
+        radial-gradient(
+            circle at 80% 20%,
+            rgba(139, 124, 255, 0.055),
+            transparent 22%
+        ),
+        radial-gradient(
+            circle at 60% 80%,
+            rgba(179, 108, 255, 0.045),
+            transparent 25%
+        );
+
+    filter:
+        blur(40px);
+
+    transform:
+        translate3d(0, 0, 0);
+
+    animation:
+        nexoraAmbientDrift 24s ease-in-out infinite alternate;
+}
+
+.nexora-environment::after {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
 
     background:
         linear-gradient(
             90deg,
-            rgba(2, 5, 13, 0.96),
-            rgba(6, 12, 25, 0.94),
-            rgba(2, 5, 13, 0.96)
+            transparent 0%,
+            rgba(110, 231, 255, 0.018) 50%,
+            transparent 100%
         );
 
-    border-bottom: 1px solid var(--nexora-border);
+    opacity:
+        0.8;
+}
+
+@keyframes nexoraAmbientDrift {
+
+    0% {
+        transform:
+            translate3d(-2%, -1%, 0)
+            scale(1);
+    }
+
+    50% {
+        transform:
+            translate3d(2%, 1%, 0)
+            scale(1.03);
+    }
+
+    100% {
+        transform:
+            translate3d(-1%, 2%, 0)
+            scale(1.06);
+    }
+}
+
+
+/* ============================================================
+   07. NAVIGATION
+   ============================================================ */
+
+.nexora-navbar {
+    position:
+        sticky;
+
+    top:
+        0;
+
+    z-index:
+        var(--z-navigation);
+
+    min-height:
+        var(--nexora-nav-height);
+
+    border-bottom:
+        1px solid
+        var(--nexora-border-soft);
+
+    background:
+        rgba(3, 7, 16, 0.76);
+
+    backdrop-filter:
+        blur(18px)
+        saturate(140%);
+
+    -webkit-backdrop-filter:
+        blur(18px)
+        saturate(140%);
 
     box-shadow:
-        0 12px 50px rgba(0, 0, 0, 0.4),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.025);
-
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+        0 12px 40px rgba(0, 0, 0, 0.18);
 }
 
 .nexora-navbar::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -1px;
+    content:
+        "";
 
-    height: 1px;
+    position:
+        absolute;
+
+    left:
+        0;
+
+    right:
+        0;
+
+    bottom:
+        -1px;
+
+    height:
+        1px;
 
     background:
         linear-gradient(
             90deg,
             transparent,
-            var(--nexora-primary),
-            var(--nexora-accent),
+            rgba(110, 231, 255, 0.55),
+            rgba(179, 108, 255, 0.45),
             transparent
         );
 
-    opacity: 0.55;
+    opacity:
+        0.65;
 }
 
 .nexora-brand {
-    position: relative;
+    display:
+        inline-flex;
 
-    display: inline-flex;
-    align-items: center;
-    gap: 0.7rem;
+    align-items:
+        center;
 
-    color: #ffffff !important;
-    font-weight: 800;
-    letter-spacing: 0.12em;
+    gap:
+        0.7rem;
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-display);
+
+    font-size:
+        1rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.13em;
+
+    white-space:
+        nowrap;
+}
+
+.nexora-brand:hover {
+    color:
+        var(--nexora-primary);
 
     text-shadow:
-        0 0 8px rgba(110, 231, 255, 0.6),
-        0 0 30px rgba(110, 231, 255, 0.25);
+        var(--nexora-glow-primary);
 }
 
-.nexora-brand::before {
-    content: "◈";
+.nexora-brand-mark {
+    display:
+        inline-grid;
 
-    color: var(--nexora-primary);
-    font-size: 1.35rem;
+    place-items:
+        center;
 
-    animation: nexoraPulse 3s ease-in-out infinite;
-}
+    width:
+        34px;
 
-.nexora-nav-link {
-    position: relative;
+    height:
+        34px;
 
-    color: var(--nexora-text-soft) !important;
+    border:
+        1px solid
+        var(--nexora-border);
 
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    transition:
-        color var(--nexora-transition),
-        transform var(--nexora-transition);
-}
-
-.nexora-nav-link::after {
-    content: "";
-
-    position: absolute;
-    left: 50%;
-    right: 50%;
-    bottom: 0;
-
-    height: 2px;
-
-    background: var(--nexora-primary);
-    box-shadow: 0 0 10px var(--nexora-primary);
-
-    transition:
-        left var(--nexora-transition),
-        right var(--nexora-transition);
-}
-
-.nexora-nav-link:hover,
-.nexora-nav-link.active {
-    color: #ffffff !important;
-}
-
-.nexora-nav-link:hover::after,
-.nexora-nav-link.active::after {
-    left: 12%;
-    right: 12%;
-}
-
-.nexora-auth-button {
-    border: 1px solid var(--nexora-border-strong) !important;
+    border-radius:
+        9px;
 
     background:
         linear-gradient(
-            135deg,
-            rgba(110, 231, 255, 0.10),
-            rgba(139, 124, 255, 0.10)
-        ) !important;
+            145deg,
+            rgba(110, 231, 255, 0.1),
+            rgba(139, 124, 255, 0.08)
+        );
 
-    color: #ffffff !important;
+    color:
+        var(--nexora-primary);
 
     box-shadow:
-        inset 0 0 18px rgba(110, 231, 255, 0.04),
-        0 0 0 rgba(110, 231, 255, 0);
+        inset 0 0 18px rgba(110, 231, 255, 0.05),
+        var(--nexora-glow-primary);
+}
+
+.nexora-nav-link {
+    position:
+        relative;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    min-height:
+        44px;
+
+    padding-inline:
+        0.8rem;
+
+    color:
+        var(--nexora-text-soft);
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        0.86rem;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.025em;
+
+    transition:
+        color var(--nexora-transition);
+}
+
+.nexora-nav-link::after {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        0.8rem;
+
+    right:
+        0.8rem;
+
+    bottom:
+        0;
+
+    height:
+        2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--nexora-primary),
+            var(--nexora-accent)
+        );
+
+    transform:
+        scaleX(0);
+
+    transform-origin:
+        left;
+
+    transition:
+        transform var(--nexora-transition);
+}
+
+.nexora-nav-link:hover,
+.nexora-nav-link.is-active {
+    color:
+        #ffffff;
+}
+
+.nexora-nav-link:hover::after,
+.nexora-nav-link.is-active::after {
+    transform:
+        scaleX(1);
+}
+
+.nexora-auth-button {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    min-height:
+        42px;
+
+    padding:
+        0.55rem 1rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(110, 231, 255, 0.04);
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-ui);
+
+    font-weight:
+        700;
 
     transition:
         transform var(--nexora-transition),
-        box-shadow var(--nexora-transition),
-        border-color var(--nexora-transition);
+        border-color var(--nexora-transition),
+        background var(--nexora-transition),
+        box-shadow var(--nexora-transition);
 }
 
 .nexora-auth-button:hover {
-    transform: translateY(-2px);
+    transform:
+        translateY(-2px);
 
-    border-color: var(--nexora-primary) !important;
+    border-color:
+        var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.08);
 
     box-shadow:
-        var(--nexora-glow-primary),
-        inset 0 0 18px rgba(110, 231, 255, 0.08);
-}
-
-.nexora-navbar .navbar-toggler {
-    border-color: var(--nexora-border);
-}
-
-.nexora-navbar .navbar-toggler-icon {
-    filter:
-        invert(1)
-        drop-shadow(0 0 5px rgba(110, 231, 255, 0.7));
+        var(--nexora-glow-primary);
 }
 
 
 /* ============================================================
-   06. HERO SYSTEM
+   08. HERO SYSTEM
    ============================================================ */
 
 .nexora-hero {
-    position: relative;
+    position:
+        relative;
 
-    min-height: 720px;
+    min-height:
+        min(860px, calc(100vh - var(--nexora-nav-height)));
 
-    display: flex;
-    align-items: center;
+    display:
+        flex;
 
-    overflow: hidden;
+    align-items:
+        center;
 
-    border-bottom: 1px solid var(--nexora-border);
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
 }
 
 .nexora-hero::before {
-    content: "";
+    content:
+        "";
 
-    position: absolute;
-    inset: 0;
+    position:
+        absolute;
+
+    inset:
+        0;
 
     background:
         radial-gradient(
-            circle at 50% 40%,
-            rgba(110, 231, 255, 0.13),
-            transparent 24%
-        ),
-        radial-gradient(
-            circle at 80% 25%,
-            rgba(179, 108, 255, 0.14),
-            transparent 30%
+            ellipse at 50% 20%,
+            rgba(110, 231, 255, 0.07),
+            transparent 42%
         );
 
-    pointer-events: none;
+    pointer-events:
+        none;
 }
 
-.nexora-hero-grid {
-    position: absolute;
-    inset: 0;
+.nexora-hero-content {
+    position:
+        relative;
+
+    z-index:
+        2;
+}
+
+.nexora-hero-title {
+    max-width:
+        1000px;
+
+    margin-bottom:
+        1.5rem;
+
+    font-size:
+        clamp(2.5rem, 7vw, 6.5rem);
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        -0.02em;
+}
+
+.nexora-hero-subtitle {
+    max-width:
+        760px;
+
+    color:
+        var(--nexora-text-soft);
+
+    font-size:
+        clamp(1rem, 1.6vw, 1.25rem);
+
+    line-height:
+        1.75;
+}
+
+.nexora-eyebrow {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        0.6rem;
+
+    margin-bottom:
+        1.25rem;
+
+    color:
+        var(--nexora-primary);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.17em;
+
+    text-transform:
+        uppercase;
+}
+
+
+/* ============================================================
+   09. DISPLAY / HEADING SYSTEM
+   ============================================================ */
+
+.nexora-heading-system {
+    position:
+        relative;
+
+    display:
+        inline-block;
+
+    isolation:
+        isolate;
+}
+
+.nexora-heading-system::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    left:
+        -1rem;
+
+    top:
+        50%;
+
+    width:
+        4px;
+
+    height:
+        70%;
+
+    transform:
+        translateY(-50%);
+
+    border-radius:
+        999px;
+
+    background:
+        linear-gradient(
+            180deg,
+            var(--nexora-primary),
+            var(--nexora-accent)
+        );
+
+    box-shadow:
+        0 0 10px var(--nexora-primary),
+        0 0 24px rgba(110, 231, 255, 0.28);
+
+    opacity:
+        0.85;
+}
+
+.nexora-heading-system .nexora-heading-kicker {
+    display:
+        block;
+
+    margin-bottom:
+        0.75rem;
+
+    color:
+        var(--nexora-primary);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.68rem;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.2em;
+
+    text-transform:
+        uppercase;
+
+    opacity:
+        0.8;
+}
+
+.nexora-heading-system h1,
+.nexora-heading-system h2 {
+    margin:
+        0;
+
+    font-family:
+        var(--font-display);
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        var(--letter-display);
+}
+
+.nexora-glow-heading {
+    background:
+        linear-gradient(
+            110deg,
+            #ffffff 0%,
+            #9eeeff 30%,
+            #ffffff 50%,
+            #c3b8ff 70%,
+            #ffffff 100%
+        );
+
+    background-size:
+        240% auto;
+
+    -webkit-background-clip:
+        text;
+
+    background-clip:
+        text;
+
+    color:
+        transparent;
+
+    animation:
+        nexoraTitleShimmer 8s linear infinite;
+
+    filter:
+        drop-shadow(
+            0 0 12px
+            rgba(110, 231, 255, 0.18)
+        );
+}
+
+@keyframes nexoraTitleShimmer {
+
+    0% {
+        background-position:
+            200% center;
+    }
+
+    100% {
+        background-position:
+            -40% center;
+    }
+}
+
+
+/* ============================================================
+   10. BUTTON SYSTEM
+   ============================================================ */
+
+.nexora-button {
+    position:
+        relative;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    gap:
+        0.55rem;
+
+    min-height:
+        46px;
+
+    padding:
+        0.7rem 1.15rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius-sm);
+
+    background:
+        rgba(110, 231, 255, 0.045);
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        0.86rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.025em;
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    transition:
+        transform var(--nexora-transition),
+        border-color var(--nexora-transition),
+        background var(--nexora-transition),
+        box-shadow var(--nexora-transition);
+}
+
+.nexora-button::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        -1;
+
+    background:
+        linear-gradient(
+            100deg,
+            transparent,
+            rgba(110, 231, 255, 0.1),
+            transparent
+        );
+
+    transform:
+        translateX(-120%);
+
+    transition:
+        transform 500ms var(--nexora-ease-smooth);
+}
+
+.nexora-button:hover {
+    transform:
+        translateY(-2px);
+
+    border-color:
+        var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.09);
+
+    box-shadow:
+        var(--nexora-glow-primary);
+}
+
+.nexora-button:hover::before {
+    transform:
+        translateX(120%);
+}
+
+.nexora-button:active {
+    transform:
+        translateY(0);
+}
+
+.nexora-button--primary {
+    border-color:
+        rgba(110, 231, 255, 0.55);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(110, 231, 255, 0.14),
+            rgba(139, 124, 255, 0.12)
+        );
+}
+
+.nexora-button--success {
+    border-color:
+        rgba(86, 243, 154, 0.45);
+
+    background:
+        rgba(86, 243, 154, 0.06);
+}
+
+.nexora-button--danger {
+    border-color:
+        rgba(255, 92, 124, 0.45);
+
+    background:
+        rgba(255, 92, 124, 0.06);
+}
+
+.nexora-button--ghost {
+    background:
+        transparent;
+
+    border-color:
+        var(--nexora-border-soft);
+}
+
+
+/* ============================================================
+   11. SIGNAL / STATUS SYSTEM
+   ============================================================ */
+
+.nexora-signal {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        0.65rem;
+
+    min-height:
+        32px;
+
+    padding:
+        0.4rem 0.75rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        999px;
+
+    background:
+        rgba(110, 231, 255, 0.035);
+
+    color:
+        var(--nexora-text-soft);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.62rem;
+
+    letter-spacing:
+        0.08em;
+
+    text-transform:
+        uppercase;
+}
+
+.nexora-signal-dot {
+    width:
+        7px;
+
+    height:
+        7px;
+
+    flex:
+        0 0 7px;
+
+    border-radius:
+        50%;
+
+    background:
+        var(--nexora-success);
+
+    box-shadow:
+        0 0 7px var(--nexora-success),
+        0 0 18px rgba(86, 243, 154, 0.25);
+
+    animation:
+        nexoraStatusPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes nexoraStatusPulse {
+
+    0%,
+    100% {
+        opacity:
+            0.65;
+
+        transform:
+            scale(0.9);
+    }
+
+    50% {
+        opacity:
+            1;
+
+        transform:
+            scale(1.08);
+    }
+}
+
+.nexora-status {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        0.45rem;
+
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        0.72rem;
+
+    font-weight:
+        600;
+
+    text-transform:
+        uppercase;
+
+    letter-spacing:
+        0.08em;
+}
+
+.nexora-status--success {
+    color:
+        var(--nexora-success);
+}
+
+.nexora-status--warning {
+    color:
+        var(--nexora-warning);
+}
+
+.nexora-status--danger {
+    color:
+        var(--nexora-danger);
+}
+
+
+/* ============================================================
+   12. HUD PANELS / CARDS
+   ============================================================ */
+
+.nexora-panel {
+    position:
+        relative;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(12, 20, 36, 0.88),
+            rgba(5, 10, 21, 0.88)
+        );
+
+    box-shadow:
+        var(--nexora-shadow-card);
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+
+    transition:
+        transform var(--nexora-transition),
+        border-color var(--nexora-transition),
+        box-shadow var(--nexora-transition);
+}
+
+.nexora-panel::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    z-index:
+        -1;
+
+    background:
+        radial-gradient(
+            circle at 0% 0%,
+            rgba(110, 231, 255, 0.07),
+            transparent 34%
+        );
+
+    pointer-events:
+        none;
+}
+
+.nexora-panel:hover {
+    transform:
+        translateY(-4px);
+
+    border-color:
+        var(--nexora-border-strong);
+
+    box-shadow:
+        var(--nexora-shadow-card),
+        0 0 30px rgba(110, 231, 255, 0.07);
+}
+
+.nexora-card {
+    position:
+        relative;
+
+    padding:
+        clamp(1.1rem, 2vw, 1.75rem);
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        var(--nexora-bg-panel);
+
+    box-shadow:
+        var(--nexora-shadow-card);
+}
+
+.nexora-card-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                min(100%, 280px),
+                1fr
+            )
+        );
+
+    gap:
+        clamp(1rem, 2vw, 1.5rem);
+
+    contain:
+        layout;
+}
+
+
+/* ============================================================
+   13. CORNER FRAME / HUD DECORATION
+   ============================================================ */
+
+.nexora-corner-frame {
+    position:
+        relative;
+}
+
+.nexora-corner-frame::before,
+.nexora-corner-frame::after {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    width:
+        24px;
+
+    height:
+        24px;
+
+    pointer-events:
+        none;
+}
+
+.nexora-corner-frame::before {
+    top:
+        0;
+
+    left:
+        0;
+
+    border-top:
+        1px solid
+        var(--nexora-primary);
+
+    border-left:
+        1px solid
+        var(--nexora-primary);
+}
+
+.nexora-corner-frame::after {
+    right:
+        0;
+
+    bottom:
+        0;
+
+    border-right:
+        1px solid
+        var(--nexora-accent);
+
+    border-bottom:
+        1px solid
+        var(--nexora-accent);
+}
+
+
+/* ============================================================
+   14. GRID FIELD
+   ============================================================ */
+
+.nexora-grid-field {
+    position:
+        absolute;
+
+    inset:
+        0;
+
+    pointer-events:
+        none;
 
     background-image:
         linear-gradient(
@@ -483,121 +1686,540 @@ strong {
             transparent 1px
         );
 
-    background-size: 60px 60px;
+    background-size:
+        56px 56px;
 
     mask-image:
         radial-gradient(
             ellipse at center,
-            black 20%,
+            black 15%,
             transparent 78%
         );
 
-    animation: nexoraGridDrift 20s linear infinite;
-}
-
-.nexora-hero-content {
-    position: relative;
-    z-index: 3;
-
-    padding-block: 7rem;
-}
-
-.nexora-hero-title {
-    max-width: 1050px;
-
-    margin-bottom: 1.5rem;
-
-    font-size: clamp(
-        3rem,
-        8vw,
-        7.8rem
-    );
-
-    line-height: 0.96;
-    font-weight: 900;
-
-    text-transform: uppercase;
-
-    background:
-        linear-gradient(
-            110deg,
-            #ffffff 0%,
-            #9eeeff 35%,
-            #ffffff 50%,
-            #c3b8ff 72%,
-            #ffffff 100%
+    -webkit-mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 15%,
+            transparent 78%
         );
 
-    background-size: 220% auto;
+    opacity:
+        0.65;
 
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-
-    animation: nexoraTitleShimmer 7s linear infinite;
-
-    filter:
-        drop-shadow(0 0 12px rgba(110, 231, 255, 0.22));
+    animation:
+        nexoraGridDrift 24s linear infinite;
 }
 
-.nexora-hero-subtitle {
-    max-width: 820px;
-
-    font-size: clamp(
-        1.1rem,
-        2vw,
-        1.5rem
-    );
-
-    color: #b9cce7;
+.nexora-grid-field--dense {
+    background-size:
+        32px 32px;
 }
 
-.nexora-hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
+.nexora-grid-field--wide {
+    background-size:
+        90px 90px;
+}
 
-    margin-top: 2.25rem;
+@keyframes nexoraGridDrift {
+
+    from {
+        background-position:
+            0 0;
+    }
+
+    to {
+        background-position:
+            56px 56px;
+    }
 }
 
 
 /* ============================================================
-   07. FUTURISTIC BUTTONS
+   15. TELEMETRY
    ============================================================ */
 
-.nexora-button {
-    position: relative;
+.nexora-telemetry {
+    display:
+        grid;
 
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.6rem;
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                150px,
+                1fr
+            )
+        );
 
-    min-height: 50px;
-    padding: 0.75rem 1.35rem;
+    gap:
+        0.75rem;
+}
 
-    border: 1px solid var(--nexora-border-strong);
-    border-radius: var(--nexora-radius-sm);
+.nexora-telemetry-item {
+    padding:
+        0.9rem;
+
+    border:
+        1px solid
+        var(--nexora-border-soft);
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+.nexora-telemetry-label {
+    display:
+        block;
+
+    margin-bottom:
+        0.35rem;
+
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.58rem;
+
+    letter-spacing:
+        0.1em;
+
+    text-transform:
+        uppercase;
+}
+
+.nexora-telemetry-value {
+    color:
+        #ffffff;
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        500;
+}
+
+
+/* ============================================================
+   16. TERMINAL / MACHINE INTERFACE
+   ============================================================ */
+
+.nexora-terminal {
+    position:
+        relative;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        rgba(1, 4, 10, 0.94);
+
+    box-shadow:
+        var(--nexora-shadow);
+
+    overflow:
+        hidden;
+
+    isolation:
+        isolate;
+}
+
+.nexora-terminal-bar {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    min-height:
+        42px;
+
+    padding:
+        0 1rem;
+
+    border-bottom:
+        1px solid
+        var(--nexora-border-soft);
+
+    background:
+        rgba(255, 255, 255, 0.018);
+}
+
+.nexora-terminal-title {
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.65rem;
+
+    letter-spacing:
+        0.12em;
+
+    text-transform:
+        uppercase;
+}
+
+.nexora-terminal-content {
+    padding:
+        1.25rem;
+
+    color:
+        #cfe4ff;
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.78rem;
+
+    line-height:
+        1.8;
+
+    overflow-x:
+        auto;
+
+    scrollbar-width:
+        thin;
+}
+
+.nexora-terminal-prompt {
+    color:
+        var(--nexora-success);
+}
+
+.nexora-terminal-command {
+    color:
+        var(--nexora-primary);
+}
+
+.nexora-terminal-muted {
+    color:
+        var(--nexora-text-muted);
+}
+
+
+/* ============================================================
+   17. FLOATING MEDIA
+   ============================================================ */
+
+.nexora-float-stage {
+    position:
+        relative;
+
+    min-height:
+        520px;
+
+    isolation:
+        isolate;
+}
+
+.nexora-float-object {
+    position:
+        absolute;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        rgba(3, 7, 16, 0.8);
+
+    box-shadow:
+        var(--nexora-shadow-deep),
+        var(--nexora-glow-primary);
+
+    transform:
+        translate3d(0, 0, 0);
+
+    will-change:
+        transform;
+
+    transition:
+        border-color var(--nexora-transition),
+        box-shadow var(--nexora-transition);
+}
+
+.nexora-float-object img {
+    display:
+        block;
+
+    width:
+        100%;
+
+    height:
+        100%;
+
+    object-fit:
+        cover;
+
+    transition:
+        transform 800ms var(--nexora-ease-smooth),
+        filter 500ms ease;
+}
+
+.nexora-float-object:hover {
+    border-color:
+        var(--nexora-border-strong);
+
+    box-shadow:
+        var(--nexora-shadow-deep),
+        var(--nexora-glow-primary);
+}
+
+.nexora-float-object:hover img {
+    transform:
+        scale(1.045);
+
+    filter:
+        saturate(1.08)
+        contrast(1.04);
+}
+
+.nexora-float-object--primary {
+    width:
+        min(72%, 620px);
+
+    aspect-ratio:
+        16 / 10;
+
+    top:
+        4%;
+
+    left:
+        14%;
+
+    z-index:
+        3;
+
+    animation:
+        nexoraFloatPrimary 8s ease-in-out infinite;
+}
+
+.nexora-float-object--secondary {
+    width:
+        min(42%, 360px);
+
+    aspect-ratio:
+        4 / 3;
+
+    right:
+        2%;
+
+    bottom:
+        4%;
+
+    z-index:
+        4;
+
+    animation:
+        nexoraFloatSecondary 9s ease-in-out infinite;
+}
+
+.nexora-float-object--tertiary {
+    width:
+        min(32%, 280px);
+
+    aspect-ratio:
+        1 / 1;
+
+    left:
+        0;
+
+    bottom:
+        8%;
+
+    z-index:
+        2;
+
+    animation:
+        nexoraFloatTertiary 10s ease-in-out infinite;
+}
+
+@keyframes nexoraFloatPrimary {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            rotate(-0.5deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0, -12px, 0)
+            rotate(0.5deg);
+    }
+}
+
+@keyframes nexoraFloatSecondary {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            rotate(1deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0, -18px, 0)
+            rotate(-1deg);
+    }
+}
+
+@keyframes nexoraFloatTertiary {
+
+    0%,
+    100% {
+        transform:
+            translate3d(0, 0, 0)
+            rotate(-1deg);
+    }
+
+    50% {
+        transform:
+            translate3d(0, 14px, 0)
+            rotate(1deg);
+    }
+}
+
+
+/* ============================================================
+   18. IMAGE SHOWCASE
+   ============================================================ */
+
+.nexora-image-showcase {
+    position:
+        relative;
+
+    overflow:
+        hidden;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius-lg);
+
+    background:
+        #02050b;
+
+    box-shadow:
+        var(--nexora-shadow-deep);
+}
+
+.nexora-image-showcase img {
+    display:
+        block;
+
+    width:
+        100%;
+
+    aspect-ratio:
+        16 / 9;
+
+    object-fit:
+        cover;
+
+    transition:
+        transform 800ms var(--nexora-ease-smooth);
+}
+
+.nexora-image-showcase:hover img {
+    transform:
+        scale(1.025);
+}
+
+.nexora-media {
+    contain:
+        layout
+        paint;
+
+    overflow:
+        hidden;
+}
+
+.nexora-media img {
+    display:
+        block;
+
+    width:
+        100%;
+
+    height:
+        auto;
+
+    object-fit:
+        cover;
+}
+
+
+/* ============================================================
+   19. AI RACE / COMPARISON SYSTEM
+   ============================================================ */
+
+.nexora-ai-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                min(100%, 260px),
+                1fr
+            )
+        );
+
+    gap:
+        1rem;
+}
+
+.nexora-ai-card {
+    position:
+        relative;
+
+    padding:
+        1.35rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
 
     background:
         linear-gradient(
-            135deg,
-            rgba(110, 231, 255, 0.13),
-            rgba(139, 124, 255, 0.10)
+            145deg,
+            rgba(13, 21, 38, 0.9),
+            rgba(4, 9, 18, 0.92)
         );
 
-    color: #ffffff;
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    overflow: hidden;
-
     box-shadow:
-        inset 0 0 20px rgba(110, 231, 255, 0.03);
+        var(--nexora-shadow-card);
+
+    overflow:
+        hidden;
 
     transition:
         transform var(--nexora-transition),
@@ -605,1361 +2227,171 @@ strong {
         box-shadow var(--nexora-transition);
 }
 
-.nexora-button::before {
-    content: "";
+.nexora-ai-card::before {
+    content:
+        "";
 
-    position: absolute;
-    inset: 0;
+    position:
+        absolute;
 
-    background:
-        linear-gradient(
-            110deg,
-            transparent 20%,
-            rgba(255, 255, 255, 0.16) 50%,
-            transparent 80%
-        );
+    top:
+        0;
 
-    transform: translateX(-120%);
-    transition: transform 600ms ease;
-}
+    left:
+        0;
 
-.nexora-button:hover {
-    color: #ffffff;
+    right:
+        0;
 
-    transform: translateY(-3px);
-
-    border-color: var(--nexora-primary);
-
-    box-shadow:
-        var(--nexora-glow-primary),
-        inset 0 0 24px rgba(110, 231, 255, 0.07);
-}
-
-.nexora-button:hover::before {
-    transform: translateX(120%);
-}
-
-.nexora-button-primary {
-    background:
-        linear-gradient(
-            135deg,
-            rgba(110, 231, 255, 0.22),
-            rgba(139, 124, 255, 0.18)
-        );
-
-    box-shadow: var(--nexora-glow-primary);
-}
-
-
-/* ============================================================
-   08. SECTION SYSTEM
-   ============================================================ */
-
-.nexora-section {
-    position: relative;
-
-    padding-block: 7rem;
-
-    overflow: hidden;
-}
-
-.nexora-section:nth-of-type(even) {
-    background:
-        linear-gradient(
-            180deg,
-            rgba(255, 255, 255, 0.008),
-            rgba(110, 231, 255, 0.018),
-            rgba(255, 255, 255, 0.008)
-        );
-}
-
-.nexora-section-header {
-    max-width: 900px;
-    margin-bottom: 3.5rem;
-}
-
-.nexora-section-title {
-    margin-bottom: 1rem;
-
-    font-size: clamp(
-        2rem,
-        4vw,
-        3.8rem
-    );
-
-    font-weight: 800;
-}
-
-.nexora-section-title span {
-    color: var(--nexora-primary);
-
-    text-shadow: var(--nexora-glow-primary);
-}
-
-
-/* ============================================================
-   09. HUD PANELS
-   ============================================================ */
-
-.nexora-panel {
-    position: relative;
-
-    height: 100%;
-
-    padding: 2rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: var(--nexora-radius);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(14, 23, 42, 0.88),
-            rgba(4, 9, 19, 0.92)
-        );
-
-    box-shadow:
-        var(--nexora-shadow),
-        inset 0 1px 0 rgba(255, 255, 255, 0.035);
-
-    overflow: hidden;
-
-    transition:
-        transform var(--nexora-transition-slow),
-        border-color var(--nexora-transition-slow),
-        box-shadow var(--nexora-transition-slow);
-}
-
-.nexora-panel::before {
-    content: "";
-
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-
-    height: 2px;
+    height:
+        2px;
 
     background:
         linear-gradient(
             90deg,
-            transparent,
             var(--nexora-primary),
-            var(--nexora-accent),
-            transparent
+            var(--nexora-accent)
         );
 
-    opacity: 0.65;
-}
-
-.nexora-panel::after {
-    content: "";
-
-    position: absolute;
-
-    width: 180px;
-    height: 180px;
-
-    top: -100px;
-    right: -80px;
-
-    border-radius: 50%;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(110, 231, 255, 0.12),
-            transparent 68%
-        );
-
-    pointer-events: none;
-}
-
-.nexora-panel:hover {
-    transform: translateY(-6px);
-
-    border-color: var(--nexora-border-strong);
-
-    box-shadow:
-        0 28px 90px rgba(0, 0, 0, 0.54),
-        var(--nexora-glow-primary);
-}
-
-.nexora-panel-title {
-    margin-bottom: 1rem;
-
-    font-size: 1.1rem;
-    text-transform: uppercase;
-}
-
-.nexora-panel-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-
-    width: 52px;
-    height: 52px;
-
-    margin-bottom: 1.25rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: 12px;
-
-    background:
-        rgba(110, 231, 255, 0.05);
-
-    color: var(--nexora-primary);
-
-    font-size: 1.25rem;
-
-    box-shadow:
-        inset 0 0 20px rgba(110, 231, 255, 0.04),
-        var(--nexora-glow-primary);
-}
-
-
-/* ============================================================
-   10. HUD CORNERS
-   ============================================================ */
-
-.nexora-corner-frame {
-    position: relative;
-}
-
-.nexora-corner-frame::before,
-.nexora-corner-frame::after {
-    content: "";
-
-    position: absolute;
-
-    width: 30px;
-    height: 30px;
-
-    pointer-events: none;
-}
-
-.nexora-corner-frame::before {
-    top: 0;
-    left: 0;
-
-    border-top: 2px solid var(--nexora-primary);
-    border-left: 2px solid var(--nexora-primary);
-
-    filter: drop-shadow(0 0 6px var(--nexora-primary));
-}
-
-.nexora-corner-frame::after {
-    right: 0;
-    bottom: 0;
-
-    border-right: 2px solid var(--nexora-accent);
-    border-bottom: 2px solid var(--nexora-accent);
-
-    filter: drop-shadow(0 0 6px var(--nexora-accent));
-}
-
-
-/* ============================================================
-   11. TELEMETRY
-   ============================================================ */
-
-.nexora-telemetry {
-    display: grid;
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(170px, 1fr)
-        );
-
-    gap: 1rem;
-}
-
-.nexora-telemetry-item {
-    padding: 1rem;
-
-    border-left: 2px solid var(--nexora-primary);
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(110, 231, 255, 0.07),
-            transparent
-        );
-}
-
-.nexora-telemetry-label {
-    display: block;
-
-    margin-bottom: 0.35rem;
-
-    color: var(--nexora-text-muted);
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.nexora-telemetry-value {
-    color: #ffffff;
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 1rem;
-    font-weight: 700;
-}
-
-
-/* ============================================================
-   12. STATUS INDICATORS
-   ============================================================ */
-
-.nexora-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-
-    color: var(--nexora-success);
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.nexora-status-dot {
-    width: 9px;
-    height: 9px;
-
-    border-radius: 50%;
-
-    background: currentColor;
-
-    box-shadow:
-        0 0 6px currentColor,
-        0 0 16px currentColor;
-
-    animation: nexoraStatusPulse 2s ease-in-out infinite;
-}
-
-
-/* ============================================================
-   13. AI RACE
-   ============================================================ */
-
-.nexora-race-board {
-    position: relative;
-
-    padding: 2rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: var(--nexora-radius-lg);
-
-    background:
-        linear-gradient(
-            135deg,
-            rgba(8, 15, 29, 0.96),
-            rgba(5, 8, 17, 0.98)
-        );
-
-    overflow: hidden;
-
-    box-shadow:
-        var(--nexora-shadow);
-}
-
-.nexora-race-board::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        repeating-linear-gradient(
-            0deg,
-            transparent,
-            transparent 38px,
-            rgba(110, 231, 255, 0.025) 39px
-        );
-
-    pointer-events: none;
-}
-
-.nexora-race-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-
-    margin-bottom: 2rem;
-}
-
-.nexora-race-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(230px, 1fr)
-        );
-
-    gap: 1rem;
-}
-
-.nexora-ai-card {
-    position: relative;
-
-    display: flex;
-    flex-direction: column;
-
-    min-height: 340px;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: var(--nexora-radius);
-
-    background:
-        rgba(3, 8, 17, 0.92);
-
-    overflow: hidden;
-
-    transition:
-        transform var(--nexora-transition-slow),
-        border-color var(--nexora-transition-slow),
-        box-shadow var(--nexora-transition-slow);
+    opacity:
+        0.55;
 }
 
 .nexora-ai-card:hover {
-    transform: translateY(-8px) scale(1.01);
+    transform:
+        translateY(-5px);
 
-    border-color: var(--nexora-primary);
+    border-color:
+        var(--nexora-border-strong);
 
     box-shadow:
+        var(--nexora-shadow-card),
         var(--nexora-glow-primary);
 }
 
-.nexora-ai-image {
-    position: relative;
+.nexora-ai-card-logo {
+    display:
+        grid;
 
-    height: 170px;
+    place-items:
+        center;
 
-    overflow: hidden;
+    width:
+        48px;
 
-    background: #02050c;
-}
+    height:
+        48px;
 
-.nexora-ai-image::after {
-    content: "";
+    margin-bottom:
+        1rem;
 
-    position: absolute;
-    inset: 0;
+    border:
+        1px solid
+        var(--nexora-border);
 
-    background:
-        linear-gradient(
-            180deg,
-            transparent 50%,
-            rgba(2, 5, 12, 0.9) 100%
-        );
-
-    pointer-events: none;
-}
-
-.nexora-ai-image img {
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    opacity: 0.8;
-
-    transition:
-        transform 700ms ease,
-        opacity 500ms ease,
-        filter 500ms ease;
-}
-
-.nexora-ai-card:hover .nexora-ai-image img {
-    transform: scale(1.08);
-
-    opacity: 1;
-
-    filter:
-        saturate(1.2)
-        contrast(1.05);
-}
-
-.nexora-ai-content {
-    position: relative;
-
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-
-    padding: 1.35rem;
-}
-
-.nexora-ai-name {
-    margin-bottom: 0.35rem;
-
-    color: #ffffff;
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 1rem;
-    font-weight: 800;
-}
-
-.nexora-ai-provider {
-    margin-bottom: 1rem;
-
-    color: var(--nexora-primary);
-
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
-
-.nexora-ai-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.55rem;
-
-    margin-top: auto;
-    padding-top: 1.2rem;
-}
-
-.nexora-ai-action {
-    flex: 1;
-
-    min-width: 110px;
-
-    padding: 0.65rem 0.75rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: 7px;
+    border-radius:
+        12px;
 
     background:
-        rgba(110, 231, 255, 0.035);
+        rgba(110, 231, 255, 0.04);
 
-    color: var(--nexora-text-soft);
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.58rem;
-    font-weight: 700;
-    text-align: center;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-
-    transition:
-        background var(--nexora-transition),
-        border-color var(--nexora-transition),
-        color var(--nexora-transition),
-        transform var(--nexora-transition);
+    color:
+        var(--nexora-primary);
 }
 
-.nexora-ai-action:hover {
-    color: #ffffff;
+.nexora-ai-card-title {
+    margin-bottom:
+        0.35rem;
 
-    background:
-        rgba(110, 231, 255, 0.10);
+    color:
+        #ffffff;
 
-    border-color: var(--nexora-primary);
-
-    transform: translateY(-2px);
-}
-
-
-/* ============================================================
-   14. IMAGE SHOWCASE
-   ============================================================ */
-
-.nexora-image-showcase {
-    position: relative;
-
-    min-height: 420px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.nexora-floating-image {
-    position: relative;
-
-    border: 1px solid var(--nexora-border);
-
-    border-radius: 14px;
-
-    box-shadow:
-        0 25px 80px rgba(0, 0, 0, 0.55),
-        var(--nexora-glow-primary);
-
-    overflow: hidden;
-
-    animation:
-        nexoraFloat 7s ease-in-out infinite;
-}
-
-.nexora-floating-image img {
-    display: block;
-
-    width: 100%;
-    max-height: 520px;
-
-    object-fit: cover;
-}
-
-.nexora-floating-image:nth-child(2) {
-    position: absolute;
-
-    width: 42%;
-
-    right: 4%;
-    bottom: 2%;
-
-    animation-delay: -2s;
-}
-
-.nexora-floating-image:nth-child(3) {
-    position: absolute;
-
-    width: 34%;
-
-    left: 2%;
-    bottom: 8%;
-
-    animation-delay: -4s;
-}
-
-
-/* ============================================================
-   15. FINAL RACE
-   ============================================================ */
-
-.nexora-final-race {
-    position: relative;
-
-    padding: 3rem;
-
-    border: 1px solid rgba(179, 108, 255, 0.35);
-    border-radius: var(--nexora-radius-lg);
-
-    background:
-        radial-gradient(
-            circle at 50% 0%,
-            rgba(179, 108, 255, 0.15),
-            transparent 42%
-        ),
-        linear-gradient(
-            135deg,
-            rgba(12, 9, 29, 0.96),
-            rgba(4, 7, 16, 0.98)
-        );
-
-    box-shadow:
-        0 35px 100px rgba(0, 0, 0, 0.52),
-        var(--nexora-glow-purple);
-
-    overflow: hidden;
-}
-
-.nexora-final-race::before {
-    content: "";
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        linear-gradient(
-            120deg,
-            transparent 30%,
-            rgba(255, 255, 255, 0.035) 50%,
-            transparent 70%
-        );
-
-    animation: nexoraSweep 8s linear infinite;
-}
-
-.nexora-prize-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(210px, 1fr)
-        );
-
-    gap: 1rem;
-
-    margin-top: 2rem;
-}
-
-.nexora-prize {
-    position: relative;
-
-    padding: 1.5rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: var(--nexora-radius);
-
-    background:
-        rgba(3, 7, 15, 0.7);
-
-    transition:
-        transform var(--nexora-transition),
-        border-color var(--nexora-transition);
-}
-
-.nexora-prize:hover {
-    transform: translateY(-5px);
-
-    border-color: var(--nexora-accent);
-}
-
-.nexora-prize-icon {
-    margin-bottom: 1rem;
-
-    color: var(--nexora-accent);
-
-    font-size: 1.8rem;
-
-    text-shadow: var(--nexora-glow-purple);
-}
-
-.nexora-prize h3 {
-    font-size: 0.95rem;
-}
-
-
-/* ============================================================
-   16. VDP / SECURITY SECTION
-   ============================================================ */
-
-.nexora-security-grid {
-    display: grid;
-
-    grid-template-columns:
-        repeat(
-            auto-fit,
-            minmax(250px, 1fr)
-        );
-
-    gap: 1rem;
-}
-
-.nexora-security-node {
-    position: relative;
-
-    padding: 1.75rem;
-
-    border: 1px solid var(--nexora-border);
-
-    background:
-        linear-gradient(
-            145deg,
-            rgba(7, 15, 28, 0.92),
-            rgba(2, 6, 13, 0.96)
-        );
-
-    clip-path:
-        polygon(
-            0 0,
-            calc(100% - 14px) 0,
-            100% 14px,
-            100% 100%,
-            14px 100%,
-            0 calc(100% - 14px)
-        );
-
-    transition:
-        transform var(--nexora-transition),
-        border-color var(--nexora-transition);
-}
-
-.nexora-security-node:hover {
-    transform: translateY(-5px);
-
-    border-color: var(--nexora-success);
-}
-
-.nexora-security-node i {
-    color: var(--nexora-success);
-
-    text-shadow:
-        0 0 8px rgba(86, 243, 154, 0.6);
-}
-
-
-/* ============================================================
-   17. QUOTE / MISSION STATEMENTS
-   ============================================================ */
-
-.nexora-mission-quote {
-    position: relative;
-
-    margin: 2rem 0;
-    padding: 2rem 2rem 2rem 3rem;
-
-    border-left: 3px solid var(--nexora-primary);
-
-    background:
-        linear-gradient(
-            90deg,
-            rgba(110, 231, 255, 0.08),
-            transparent
-        );
-
-    color: #ffffff;
-
-    font-family: "Orbitron", sans-serif;
-    font-size: clamp(
-        1.2rem,
-        2vw,
-        1.65rem
-    );
-
-    line-height: 1.6;
-
-    text-shadow:
-        0 0 18px rgba(110, 231, 255, 0.12);
-}
-
-
-/* ============================================================
-   18. TIMELINE
-   ============================================================ */
-
-.nexora-timeline {
-    position: relative;
-
-    max-width: 1000px;
-
-    margin-inline: auto;
-}
-
-.nexora-timeline::before {
-    content: "";
-
-    position: absolute;
-
-    top: 0;
-    bottom: 0;
-    left: 20px;
-
-    width: 1px;
-
-    background:
-        linear-gradient(
-            180deg,
-            transparent,
-            var(--nexora-primary),
-            var(--nexora-accent),
-            transparent
-        );
-}
-
-.nexora-timeline-item {
-    position: relative;
-
-    padding-left: 65px;
-    margin-bottom: 2.5rem;
-}
-
-.nexora-timeline-marker {
-    position: absolute;
-
-    top: 4px;
-    left: 10px;
-
-    width: 21px;
-    height: 21px;
-
-    border: 2px solid var(--nexora-primary);
-    border-radius: 50%;
-
-    background: var(--nexora-bg-deep);
-
-    box-shadow:
-        0 0 8px var(--nexora-primary),
-        0 0 20px rgba(110, 231, 255, 0.35);
-}
-
-
-/* ============================================================
-   19. FOOTER
-   ============================================================ */
-
-.nexora-footer {
-    position: relative;
-
-    margin-top: 5rem;
-
-    padding: 4rem 0 2rem;
-
-    border-top: 1px solid var(--nexora-border);
-
-    background:
-        linear-gradient(
-            180deg,
-            rgba(3, 7, 15, 0.94),
-            rgba(1, 3, 8, 1)
-        );
-}
-
-.nexora-footer::before {
-    content: "";
-
-    position: absolute;
-
-    top: -1px;
-    left: 15%;
-    right: 15%;
-
-    height: 1px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--nexora-primary),
-            var(--nexora-accent),
-            transparent
-        );
-
-    box-shadow:
-        0 0 15px var(--nexora-primary);
-}
-
-.nexora-footer-title {
-    color: #ffffff;
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.8rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-}
-
-.nexora-footer-link {
-    display: inline-block;
-
-    margin-bottom: 0.4rem;
-
-    color: var(--nexora-text-muted);
-
-    font-size: 0.9rem;
-}
-
-.nexora-footer-link:hover {
-    color: #ffffff;
-}
-
-.nexora-command-bar {
-    display: flex;
-    flex-wrap: wrap;
-
-    gap: 0.75rem;
-
-    padding: 0.75rem;
-
-    border: 1px solid var(--nexora-border);
-    border-radius: 12px;
-
-    background:
-        rgba(110, 231, 255, 0.025);
-}
-
-.nexora-command {
-    padding: 0.5rem 0.75rem;
-
-    border: 1px solid transparent;
-    border-radius: 6px;
-
-    color: var(--nexora-text-muted);
-
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-
-    cursor: pointer;
-
-    transition:
-        color var(--nexora-transition),
-        border-color var(--nexora-transition),
-        background var(--nexora-transition);
-}
-
-.nexora-command:hover {
-    color: var(--nexora-primary);
-
-    border-color: var(--nexora-border);
-
-    background:
-        rgba(110, 231, 255, 0.05);
-}
-
-.nexora-back-to-top {
-    position: fixed;
-
-    right: 1.5rem;
-    bottom: 1.5rem;
-
-    z-index: 900;
-
-    width: 48px;
-    height: 48px;
-
-    border: 1px solid var(--nexora-border-strong);
-    border-radius: 50%;
-
-    background:
-        rgba(4, 9, 18, 0.9);
-
-    color: var(--nexora-primary);
-
-    opacity: 0;
-    visibility: hidden;
-
-    transform: translateY(15px);
-
-    transition:
-        opacity var(--nexora-transition),
-        visibility var(--nexora-transition),
-        transform var(--nexora-transition);
-
-    box-shadow: var(--nexora-glow-primary);
-}
-
-.nexora-back-to-top.is-visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0);
-}
-
-
-/* ============================================================
-   20. RESPONSIVE MEDIA
-   ============================================================ */
-
-@media (max-width: 991.98px) {
-
-    .nexora-hero {
-        min-height: 620px;
-    }
-
-    .nexora-section {
-        padding-block: 5rem;
-    }
-
-    .nexora-navbar .navbar-collapse {
-        margin-top: 1rem;
-
-        padding: 1rem;
-
-        border: 1px solid var(--nexora-border);
-        border-radius: var(--nexora-radius);
-
-        background:
-            rgba(4, 9, 18, 0.97);
-
-        box-shadow: var(--nexora-shadow);
-    }
-
-    .nexora-nav-link {
-        padding-block: 0.75rem !important;
-    }
-
-    .nexora-nav-link::after {
-        display: none;
-    }
-
-    .nexora-floating-image:nth-child(2) {
-        width: 48%;
-    }
-
-    .nexora-floating-image:nth-child(3) {
-        width: 40%;
-    }
-}
-
-@media (max-width: 767.98px) {
-
-    .nexora-container {
-        width: min(
-            calc(100% - 1.25rem),
-            var(--nexora-container)
-        );
-    }
-
-    .nexora-hero {
-        min-height: 580px;
-    }
-
-    .nexora-hero-content {
-        padding-block: 5rem;
-    }
-
-    .nexora-section {
-        padding-block: 4rem;
-    }
-
-    .nexora-panel {
-        padding: 1.35rem;
-    }
-
-    .nexora-final-race {
-        padding: 1.5rem;
-    }
-
-    .nexora-race-board {
-        padding: 1rem;
-    }
-
-    .nexora-image-showcase {
-        min-height: 330px;
-        margin-top: 2rem;
-    }
-
-    .nexora-floating-image:nth-child(2) {
-        right: 0;
-        width: 50%;
-    }
-
-    .nexora-floating-image:nth-child(3) {
-        left: 0;
-        width: 45%;
-    }
-
-    .nexora-command-bar {
-        flex-direction: column;
-    }
-
-    .nexora-command {
-        width: 100%;
-        text-align: left;
-    }
-}
-
-@media (max-width: 575.98px) {
-
-    .nexora-hero-title {
-        font-size: clamp(
-            2.6rem,
-            15vw,
-            4.4rem
-        );
-    }
-
-    .nexora-hero-actions {
-        flex-direction: column;
-    }
-
-    .nexora-button {
-        width: 100%;
-    }
-
-    .nexora-ai-actions {
-        flex-direction: column;
-    }
-
-    .nexora-ai-action {
-        width: 100%;
-    }
-
-    .nexora-timeline::before {
-        left: 10px;
-    }
-
-    .nexora-timeline-item {
-        padding-left: 40px;
-    }
-
-    .nexora-timeline-marker {
-        left: 0;
-    }
-
-    .nexora-footer {
-        padding-top: 3rem;
-    }
-}
-
-
-/* ============================================================
-   21. ACCESSIBILITY
-   ============================================================ */
-
-:focus-visible {
-    outline: 2px solid var(--nexora-primary);
-    box-shadow:
-        0 0 0 4px rgba(110, 231, 255, 0.14);
-}
-
-@media (prefers-reduced-motion: reduce) {
-
-    html {
-        scroll-behavior: auto;
-    }
-
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-
-/* ============================================================
-   22. ANIMATION ENGINE
-   ============================================================ */
-
-@keyframes nexoraPulse {
-
-    0%,
-    100% {
-        opacity: 0.7;
-        transform: scale(0.95);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.08);
-    }
-}
-
-@keyframes nexoraStatusPulse {
-
-    0%,
-    100% {
-        opacity: 0.55;
-        transform: scale(0.85);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-}
-
-@keyframes nexoraFloat {
-
-    0%,
-    100% {
-        transform: translateY(0) rotate(-1deg);
-    }
-
-    50% {
-        transform: translateY(-18px) rotate(1deg);
-    }
-}
-
-@keyframes nexoraGridDrift {
-
-    from {
-        background-position: 0 0;
-    }
-
-    to {
-        background-position: 60px 60px;
-    }
-}
-
-@keyframes nexoraTitleShimmer {
-
-    0% {
-        background-position: 200% center;
-    }
-
-    100% {
-        background-position: -20% center;
-    }
-}
-
-@keyframes nexoraSweep {
-
-    0% {
-        transform: translateX(-120%);
-    }
-
-    100% {
-        transform: translateX(120%);
-    }
-}
-
-
-/* ============================================================
-   23. UTILITY CLASSES
-   ============================================================ */
-
-.nexora-text-primary {
-    color: var(--nexora-primary) !important;
-}
-
-.nexora-text-success {
-    color: var(--nexora-success) !important;
-}
-
-.nexora-text-accent {
-    color: var(--nexora-accent) !important;
-}
-
-.nexora-glow {
-    text-shadow: var(--nexora-glow-primary);
-}
-
-.nexora-divider {
-    width: 100%;
-    height: 1px;
-    margin: 2rem 0;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            var(--nexora-border-strong),
-            transparent
-        );
-}
-
-.nexora-mono {
     font-family:
-        "Orbitron",
-        monospace;
-    letter-spacing: 0.08em;
+        var(--font-ui);
+
+    font-size:
+        1rem;
+
+    font-weight:
+        700;
 }
 
-.nexora-hidden {
-    display: none !important;
+.nexora-ai-card-meta {
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.62rem;
+
+    letter-spacing:
+        0.05em;
+
+    text-transform:
+        uppercase;
 }
+
 
 /* ============================================================
-   NEXORA VOTING INTERFACE
+   20. VOTING INTERFACE
    ============================================================ */
 
-.nexora-voting-form {
-    position: relative;
+.nexora-vote-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                min(100%, 300px),
+                1fr
+            )
+        );
+
+    gap:
+        1rem;
 }
 
 .nexora-vote-option {
-    position: relative;
+    position:
+        relative;
 
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    display:
+        flex;
 
-    min-height: 82px;
-    padding: 1rem 1.1rem;
+    align-items:
+        center;
 
-    border: 1px solid var(--nexora-border);
-    border-radius: var(--nexora-radius);
+    gap:
+        1rem;
+
+    width:
+        100%;
+
+    padding:
+        1rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
 
     background:
-        linear-gradient(
-            135deg,
-            rgba(110, 231, 255, 0.035),
-            rgba(139, 124, 255, 0.025)
-        );
+        rgba(8, 14, 27, 0.78);
 
-    cursor: pointer;
+    color:
+        var(--nexora-text);
+
+    text-align:
+        left;
+
+    cursor:
+        pointer;
 
     transition:
         transform var(--nexora-transition),
@@ -1969,650 +2401,1497 @@ strong {
 }
 
 .nexora-vote-option:hover {
-    transform: translateY(-3px);
+    transform:
+        translateY(-2px);
 
-    border-color: var(--nexora-primary);
+    border-color:
+        var(--nexora-primary);
 
     background:
-        rgba(110, 231, 255, 0.075);
+        rgba(110, 231, 255, 0.055);
+
+    box-shadow:
+        var(--nexora-glow-primary);
+}
+
+.nexora-vote-option.is-selected {
+    border-color:
+        var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.08);
 
     box-shadow:
         var(--nexora-glow-primary);
 }
 
 .nexora-vote-option input {
-    width: 20px;
-    height: 20px;
-
-    accent-color: var(--nexora-primary);
-
-    flex-shrink: 0;
+    accent-color:
+        var(--nexora-primary);
 }
 
-.nexora-vote-option span {
-    display: flex;
-    flex-direction: column;
-    gap: 0.15rem;
+
+/* ============================================================
+   21. CONTENT / ARTICLE SYSTEM
+   ============================================================ */
+
+.nexora-content {
+    max-width:
+        900px;
+
+    margin-inline:
+        auto;
 }
 
-.nexora-vote-option strong {
-    color: #ffffff;
+.nexora-content p {
+    color:
+        var(--nexora-text-soft);
 
-    font-family: "Orbitron", sans-serif;
-    font-size: 0.78rem;
-    letter-spacing: 0.04em;
+    line-height:
+        1.85;
 }
 
-.nexora-vote-option small {
-    color: var(--nexora-text-muted);
+.nexora-content a {
+    color:
+        var(--nexora-primary);
 
-    font-size: 0.85rem;
+    text-decoration:
+        underline;
+
+    text-decoration-color:
+        rgba(110, 231, 255, 0.28);
+
+    text-underline-offset:
+        3px;
 }
 
-.nexora-vote-option:has(input:checked) {
-    border-color: var(--nexora-primary);
+.nexora-content a:hover {
+    color:
+        #ffffff;
+
+    text-decoration-color:
+        var(--nexora-primary);
+}
+
+.nexora-lead {
+    max-width:
+        780px;
+
+    color:
+        var(--nexora-text-soft);
+
+    font-size:
+        clamp(1.05rem, 1.8vw, 1.25rem);
+
+    line-height:
+        1.8;
+}
+
+
+/* ============================================================
+   22. TIMELINE
+   ============================================================ */
+
+.nexora-timeline {
+    position:
+        relative;
+
+    display:
+        grid;
+
+    gap:
+        1.5rem;
+}
+
+.nexora-timeline::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        0;
+
+    bottom:
+        0;
+
+    left:
+        11px;
+
+    width:
+        1px;
 
     background:
         linear-gradient(
-            135deg,
-            rgba(110, 231, 255, 0.12),
-            rgba(139, 124, 255, 0.08)
+            180deg,
+            var(--nexora-primary),
+            var(--nexora-accent),
+            transparent
         );
+
+    opacity:
+        0.55;
+}
+
+.nexora-timeline-item {
+    position:
+        relative;
+
+    padding-left:
+        2.5rem;
+}
+
+.nexora-timeline-dot {
+    position:
+        absolute;
+
+    top:
+        0.4rem;
+
+    left:
+        5px;
+
+    width:
+        13px;
+
+    height:
+        13px;
+
+    border:
+        2px solid
+        var(--nexora-primary);
+
+    border-radius:
+        50%;
+
+    background:
+        var(--nexora-bg);
 
     box-shadow:
         var(--nexora-glow-primary);
 }
 
-#nexora-vote-status {
-    min-height: 1.5rem;
-
-    color: var(--nexora-text-soft);
-
-    font-size: 0.9rem;
-}
-
-#nexora-vote-status.is-success {
-    color: var(--nexora-success);
-}
-
-#nexora-vote-status.is-error {
-    color: var(--nexora-danger);
-}
 
 /* ============================================================
-   NEXORA CONTACT PAGE
+   23. SECURITY GRID
    ============================================================ */
 
-.nexora-contact-page {
-    overflow: hidden;
-}
+.nexora-security-grid {
+    display:
+        grid;
 
-
-/* ------------------------------------------------------------
-   HERO
-   ------------------------------------------------------------ */
-
-.nexora-contact-hero {
-    position: relative;
-    padding: 7rem 0 6rem;
-    background:
-        radial-gradient(
-            circle at 15% 30%,
-            rgba(0, 255, 200, 0.08),
-            transparent 35%
-        ),
-        radial-gradient(
-            circle at 85% 20%,
-            rgba(120, 80, 255, 0.08),
-            transparent 35%
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(
+                min(100%, 240px),
+                1fr
+            )
         );
+
+    gap:
+        1rem;
 }
 
-.nexora-eyebrow,
-.nexora-section-kicker {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    opacity: 0.85;
+.nexora-security-card {
+    padding:
+        1.25rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        rgba(7, 13, 25, 0.82);
 }
 
-.nexora-contact-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 6.5rem);
-    line-height: 0.95;
-    margin-bottom: 2rem;
-}
+.nexora-security-icon {
+    display:
+        grid;
 
-.nexora-contact-title span {
-    display: block;
-    opacity: 0.45;
-}
+    place-items:
+        center;
 
-.nexora-contact-lead {
-    max-width: 850px;
-    font-size: clamp(1.15rem, 2vw, 1.5rem);
-    line-height: 1.7;
-    margin-bottom: 1rem;
-}
+    width:
+        42px;
 
-.nexora-contact-lead-secondary {
-    max-width: 760px;
-    opacity: 0.7;
-    line-height: 1.8;
-}
+    height:
+        42px;
 
-.nexora-contact-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-top: 1.5rem;
-    padding: 0.75rem 1rem;
-    border: 1px solid rgba(0, 255, 200, 0.25);
-    background: rgba(0, 255, 200, 0.04);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-}
+    margin-bottom:
+        1rem;
 
-.nexora-status-dot,
-.nexora-social-signal span {
-    width: 9px;
-    height: 9px;
-    border-radius: 50%;
-    display: inline-block;
-    background: currentColor;
-    box-shadow: 0 0 14px currentColor;
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        10px;
+
+    color:
+        var(--nexora-success);
+
+    background:
+        rgba(86, 243, 154, 0.04);
 }
 
 
-/* ------------------------------------------------------------
-   TERMINAL
-   ------------------------------------------------------------ */
+/* ============================================================
+   24. MISSION QUOTE
+   ============================================================ */
 
-.nexora-contact-terminal {
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(0,0,0,0.35);
+.nexora-mission-quote {
+    position:
+        relative;
+
+    max-width:
+        980px;
+
+    margin-inline:
+        auto;
+
+    padding:
+        clamp(2rem, 5vw, 4rem);
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius-lg);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(110, 231, 255, 0.045),
+            rgba(139, 124, 255, 0.035)
+        );
+
     box-shadow:
-        0 25px 70px rgba(0,0,0,0.35),
-        inset 0 0 40px rgba(255,255,255,0.02);
+        var(--nexora-shadow);
 }
 
-.nexora-terminal-header {
-    display: flex;
-    align-items: center;
-    padding: 0.8rem 1rem;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
+.nexora-mission-quote::before {
+    content:
+        "“";
+
+    position:
+        absolute;
+
+    top:
+        0.4rem;
+
+    left:
+        1.25rem;
+
+    color:
+        rgba(110, 231, 255, 0.14);
+
+    font-family:
+        var(--font-display);
+
+    font-size:
+        6rem;
+
+    line-height:
+        1;
 }
 
-.nexora-terminal-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 0.35rem;
-    background: currentColor;
-    opacity: 0.65;
+.nexora-mission-quote p {
+    position:
+        relative;
+
+    margin:
+        0;
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        clamp(1.15rem, 2.4vw, 1.7rem);
+
+    line-height:
+        1.55;
 }
 
-.nexora-terminal-body {
-    padding: 1.5rem;
-    font-family: monospace;
-    font-size: 0.78rem;
+
+/* ============================================================
+   25. REVEAL / INTERSECTION SYSTEM
+   ============================================================ */
+
+.nexora-reveal {
+    opacity:
+        0;
+
+    transform:
+        translate3d(0, 24px, 0);
+
+    transition:
+        opacity 700ms var(--nexora-ease-smooth),
+        transform 700ms var(--nexora-ease-smooth);
+
+    transition-delay:
+        var(--nexora-reveal-delay, 0ms);
 }
 
-.nexora-terminal-body > div:not(.terminal-cursor) {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 0.7rem 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
+.nexora-reveal.is-visible {
+    opacity:
+        1;
+
+    transform:
+        translate3d(0, 0, 0);
 }
 
-.terminal-key {
-    opacity: 0.45;
+
+/* ============================================================
+   26. TILT / MAGNETIC INTERACTION
+   ============================================================ */
+
+.nexora-tilt {
+    transform:
+        translate3d(
+            var(--nexora-tilt-x, 0px),
+            var(--nexora-tilt-y, 0px),
+            0
+        )
+        rotateX(
+            var(--nexora-rotate-x, 0deg)
+        )
+        rotateY(
+            var(--nexora-rotate-y, 0deg)
+        );
+
+    transform-style:
+        preserve-3d;
+
+    transition:
+        transform 180ms var(--nexora-ease);
 }
 
-.terminal-value {
-    text-align: right;
+.nexora-tilt:hover {
+    transition:
+        none;
 }
 
-.terminal-online {
-    font-weight: 700;
+.nexora-magnetic {
+    position:
+        relative;
+
+    transform:
+        translate3d(
+            var(--magnetic-x, 0px),
+            var(--magnetic-y, 0px),
+            0
+        );
+
+    will-change:
+        transform;
+
+    transition:
+        transform 220ms var(--nexora-ease-smooth);
 }
 
-.terminal-cursor {
-    margin-top: 1rem;
-    animation: nexoraCursorBlink 1s steps(2, start) infinite;
-}
 
-@keyframes nexoraCursorBlink {
-    50% {
-        opacity: 0;
+/* ============================================================
+   27. CUSTOM CURSOR
+   ============================================================ */
+
+@media (pointer: fine) and (hover: hover) {
+
+    body.nexora-cursor-enabled a,
+    body.nexora-cursor-enabled button,
+    body.nexora-cursor-enabled [role="button"] {
+        cursor:
+            none;
+    }
+
+    .nexora-cursor {
+        position:
+            fixed;
+
+        top:
+            0;
+
+        left:
+            0;
+
+        width:
+            18px;
+
+        height:
+            18px;
+
+        border:
+            1px solid
+            var(--nexora-primary);
+
+        border-radius:
+            50%;
+
+        pointer-events:
+            none;
+
+        z-index:
+            var(--z-cursor);
+
+        opacity:
+            0;
+
+        transform:
+            translate3d(-50%, -50%, 0);
+
+        box-shadow:
+            0 0 8px rgba(110, 231, 255, 0.7);
+
+        transition:
+            width 180ms ease,
+            height 180ms ease,
+            border-color 180ms ease,
+            background 180ms ease,
+            opacity 180ms ease;
+    }
+
+    .nexora-cursor.is-active {
+        opacity:
+            1;
+    }
+
+    .nexora-cursor.is-hovering {
+        width:
+            38px;
+
+        height:
+            38px;
+
+        background:
+            rgba(110, 231, 255, 0.06);
+
+        box-shadow:
+            0 0 12px rgba(110, 231, 255, 0.55),
+            0 0 30px rgba(110, 231, 255, 0.18);
     }
 }
 
 
-/* ------------------------------------------------------------
-   CONTACT MAIN
-   ------------------------------------------------------------ */
+/* ============================================================
+   28. FOOTER
+   ============================================================ */
 
-.nexora-contact-main {
-    padding: 5rem 0;
+.nexora-footer {
+    position:
+        relative;
+
+    margin-top:
+        7rem;
+
+    padding:
+        5rem 0 1.5rem;
+
+    border-top:
+        1px solid
+        var(--nexora-border);
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(3, 7, 15, 0.96),
+            rgba(1, 3, 8, 1)
+        );
+
+    isolation:
+        isolate;
 }
 
-.nexora-contact-card,
-.nexora-contact-side-card,
-.nexora-topic-card {
-    border: 1px solid rgba(255,255,255,0.09);
-    background: rgba(255,255,255,0.025);
+.nexora-footer::before {
+    content:
+        "";
+
+    position:
+        absolute;
+
+    top:
+        -1px;
+
+    left:
+        10%;
+
+    right:
+        10%;
+
+    height:
+        1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            var(--nexora-primary),
+            var(--nexora-accent),
+            transparent
+        );
+
+    box-shadow:
+        0 0 18px
+        rgba(110, 231, 255, 0.5);
+}
+
+.nexora-footer-identity {
+    max-width:
+        520px;
+}
+
+.nexora-footer-brand {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        0.75rem;
+
+    margin-bottom:
+        1rem;
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-display);
+
+    font-size:
+        1.25rem;
+
+    font-weight:
+        800;
+
+    letter-spacing:
+        0.14em;
+}
+
+.nexora-footer-description {
+    max-width:
+        500px;
+
+    color:
+        var(--nexora-text-muted);
+
+    line-height:
+        1.8;
+}
+
+.nexora-footer-column-title {
+    margin-bottom:
+        1rem;
+
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        0.7rem;
+
+    font-weight:
+        700;
+
+    letter-spacing:
+        0.13em;
+
+    text-transform:
+        uppercase;
+}
+
+.nexora-footer-link {
+    display:
+        block;
+
+    width:
+        fit-content;
+
+    margin-bottom:
+        0.55rem;
+
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-body);
+
+    font-size:
+        0.9rem;
+
+    transition:
+        color var(--nexora-transition),
+        transform var(--nexora-transition);
+}
+
+.nexora-footer-link:hover {
+    color:
+        #ffffff;
+
+    transform:
+        translateX(3px);
+}
+
+.nexora-footer-system {
+    margin-top:
+        3rem;
+
+    padding:
+        1rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    background:
+        rgba(110, 231, 255, 0.018);
+}
+
+.nexora-footer-system-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(150px, 1fr)
+        );
+
+    gap:
+        0.75rem;
+}
+
+.nexora-footer-system-item {
+    padding:
+        0.75rem;
+
+    border-left:
+        2px solid
+        var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.025);
+}
+
+.nexora-footer-system-label {
+    display:
+        block;
+
+    margin-bottom:
+        0.3rem;
+
+    color:
+        var(--nexora-text-muted);
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.55rem;
+
+    letter-spacing:
+        0.1em;
+
+    text-transform:
+        uppercase;
+}
+
+.nexora-footer-system-value {
+    color:
+        #ffffff;
+
+    font-family:
+        var(--font-mono);
+
+    font-size:
+        0.72rem;
+}
+
+.nexora-footer-bottom {
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        1rem;
+
+    margin-top:
+        2rem;
+
+    padding-top:
+        1.25rem;
+
+    border-top:
+        1px solid
+        var(--nexora-border-soft);
+
+    color:
+        var(--nexora-text-muted);
+
+    font-size:
+        0.78rem;
+}
+
+.nexora-back-to-top {
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        center;
+
+    width:
+        40px;
+
+    height:
+        40px;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        50%;
+
+    color:
+        var(--nexora-primary);
+
+    background:
+        rgba(110, 231, 255, 0.035);
+
+    transition:
+        transform var(--nexora-transition),
+        border-color var(--nexora-transition),
+        box-shadow var(--nexora-transition);
+}
+
+.nexora-back-to-top:hover {
+    transform:
+        translateY(-3px);
+
+    border-color:
+        var(--nexora-primary);
+
+    box-shadow:
+        var(--nexora-glow-primary);
+}
+
+
+/* ============================================================
+   29. PERFORMANCE HELPERS
+   ============================================================ */
+
+.nexora-performant-layer {
+    transform:
+        translateZ(0);
+
+    backface-visibility:
+        hidden;
+}
+
+.nexora-contain {
+    contain:
+        layout paint;
+}
+
+.nexora-lazy-section {
+    content-visibility:
+        auto;
+
+    contain-intrinsic-size:
+        800px;
+}
+
+
+/* ============================================================
+   30. FORM SYSTEM
+   ============================================================ */
+
+.nexora-form-group {
+    margin-bottom:
+        1rem;
+}
+
+.nexora-label {
+    display:
+        block;
+
+    margin-bottom:
+        0.45rem;
+
+    color:
+        var(--nexora-text-soft);
+
+    font-family:
+        var(--font-ui);
+
+    font-size:
+        0.78rem;
+
+    font-weight:
+        600;
+
+    letter-spacing:
+        0.025em;
+}
+
+.nexora-input,
+.nexora-textarea,
+.nexora-select {
+    width:
+        100%;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius-sm);
+
+    background:
+        rgba(2, 6, 14, 0.84);
+
+    color:
+        #ffffff;
+
+    padding:
+        0.8rem 0.9rem;
+
+    transition:
+        border-color var(--nexora-transition),
+        box-shadow var(--nexora-transition),
+        background var(--nexora-transition);
+}
+
+.nexora-textarea {
+    min-height:
+        150px;
+
+    resize:
+        vertical;
+}
+
+.nexora-input::placeholder,
+.nexora-textarea::placeholder {
+    color:
+        var(--nexora-text-dim);
+}
+
+.nexora-input:hover,
+.nexora-textarea:hover,
+.nexora-select:hover {
+    border-color:
+        var(--nexora-border-strong);
+}
+
+.nexora-input:focus,
+.nexora-textarea:focus,
+.nexora-select:focus {
+    border-color:
+        var(--nexora-primary);
+
+    outline:
+        none;
+
+    background:
+        rgba(110, 231, 255, 0.025);
+
+    box-shadow:
+        0 0 0 3px rgba(110, 231, 255, 0.07),
+        var(--nexora-glow-primary);
+}
+
+
+/* ============================================================
+   31. CONTACT SYSTEM
+   ============================================================ */
+
+.nexora-contact-grid {
+    display:
+        grid;
+
+    grid-template-columns:
+        minmax(0, 1.1fr)
+        minmax(300px, 0.9fr);
+
+    gap:
+        clamp(1.5rem, 4vw, 3rem);
+
+    align-items:
+        start;
 }
 
 .nexora-contact-card {
-    padding: clamp(1.5rem, 4vw, 3rem);
-}
+    padding:
+        clamp(1.25rem, 3vw, 2rem);
 
-.nexora-contact-card h2,
-.nexora-section-heading h2 {
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 1rem;
-}
+    border:
+        1px solid
+        var(--nexora-border);
 
-.nexora-contact-card-intro {
-    opacity: 0.7;
-    line-height: 1.8;
-    margin-bottom: 2rem;
-}
+    border-radius:
+        var(--nexora-radius-lg);
 
-.nexora-contact-form .form-label {
-    font-family: 'Rajdhani', sans-serif;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-}
-
-.nexora-form-control {
-    border-radius: 0;
-    min-height: 52px;
-}
-
-.nexora-message-box {
-    min-height: 220px;
-    resize: vertical;
-}
-
-.nexora-character-counter {
-    text-align: right;
-    margin-top: 0.4rem;
-    opacity: 0.5;
-    font-size: 0.8rem;
-}
-
-.nexora-contact-consent {
-    display: flex;
-    gap: 0.9rem;
-    padding: 1rem;
-    border-left: 3px solid currentColor;
-    background: rgba(255,255,255,0.025);
-    font-size: 0.88rem;
-    line-height: 1.6;
-}
-
-.nexora-honeypot {
-    position: absolute !important;
-    left: -10000px !important;
-    width: 1px !important;
-    height: 1px !important;
-    overflow: hidden !important;
-}
-
-
-/* ------------------------------------------------------------
-   ALERTS
-   ------------------------------------------------------------ */
-
-.nexora-contact-alert {
-    padding: 1rem 1.2rem;
-    margin-bottom: 1.5rem;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.nexora-contact-alert.is-success {
-    border-color: rgba(0,255,170,0.35);
-    background: rgba(0,255,170,0.05);
-}
-
-.nexora-contact-alert.is-error {
-    border-color: rgba(255,70,100,0.35);
-    background: rgba(255,70,100,0.05);
-}
-
-
-/* ------------------------------------------------------------
-   SIDE CARDS
-   ------------------------------------------------------------ */
-
-.nexora-contact-side {
-    display: grid;
-    gap: 1.25rem;
-}
-
-.nexora-contact-side-card {
-    display: flex;
-    gap: 1.2rem;
-    padding: 1.5rem;
-}
-
-.nexora-side-icon {
-    flex: 0 0 48px;
-    width: 48px;
-    height: 48px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255,255,255,0.1);
-    font-size: 1.15rem;
-}
-
-.nexora-side-kicker {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.15em;
-    opacity: 0.5;
-    margin-bottom: 0.5rem;
-}
-
-.nexora-contact-side-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-}
-
-.nexora-contact-side-card p {
-    line-height: 1.7;
-    opacity: 0.7;
-}
-
-.nexora-email-link {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    text-decoration: none;
-    word-break: break-word;
-}
-
-.nexora-location-badges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-}
-
-.nexora-location-badges span {
-    padding: 0.35rem 0.6rem;
-    border: 1px solid rgba(255,255,255,0.1);
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.62rem;
-    letter-spacing: 0.1em;
-}
-
-.nexora-security-note {
-    font-size: 0.82rem;
-}
-
-
-/* ------------------------------------------------------------
-   TOPICS
-   ------------------------------------------------------------ */
-
-.nexora-contact-topics {
-    padding: 6rem 0;
-    background: rgba(255,255,255,0.015);
-}
-
-.nexora-section-heading {
-    max-width: 800px;
-    margin: 0 auto 3rem;
-}
-
-.nexora-section-heading p {
-    opacity: 0.65;
-}
-
-.nexora-topic-card {
-    height: 100%;
-    padding: 1.75rem;
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease;
-}
-
-.nexora-topic-card:hover {
-    transform: translateY(-5px);
-    border-color: rgba(255,255,255,0.2);
-}
-
-.nexora-topic-icon {
-    font-size: 1.5rem;
-    margin-bottom: 1.25rem;
-}
-
-.nexora-topic-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-}
-
-.nexora-topic-card p {
-    margin-bottom: 0;
-    opacity: 0.65;
-    line-height: 1.7;
-}
-
-
-/* ------------------------------------------------------------
-   SOCIAL
-   ------------------------------------------------------------ */
-
-.nexora-social-section {
-    padding: 6rem 0;
-}
-
-.nexora-social-section h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2rem, 5vw, 4rem);
-}
-
-.nexora-social-section h2 span {
-    display: block;
-    opacity: 0.45;
-}
-
-.nexora-social-section p {
-    max-width: 800px;
-    opacity: 0.7;
-    line-height: 1.8;
-}
-
-.nexora-social-signal {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.12em;
-}
-
-.nexora-social-card {
-    display: flex;
-    gap: 1.25rem;
-    height: 100%;
-    padding: 1.75rem;
-    border: 1px solid rgba(255,255,255,0.09);
-    background: rgba(255,255,255,0.02);
-    text-decoration: none;
-    transition:
-        transform 0.25s ease,
-        border-color 0.25s ease,
-        background 0.25s ease;
-}
-
-.nexora-social-card:hover {
-    transform: translateY(-6px);
-    border-color: rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.04);
-}
-
-.nexora-social-card-icon {
-    flex: 0 0 52px;
-    width: 52px;
-    height: 52px;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255,255,255,0.12);
-    font-size: 1.3rem;
-}
-
-.nexora-social-platform {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    opacity: 0.5;
-}
-
-.nexora-social-card h3 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
-    margin: 0.35rem 0 0.6rem;
-}
-
-.nexora-social-card p {
-    font-size: 0.9rem;
-    line-height: 1.65;
-    margin-bottom: 1rem;
-}
-
-.nexora-social-arrow {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.65rem;
-    letter-spacing: 0.08em;
-}
-
-.nexora-social-arrow i {
-    margin-left: 0.35rem;
-}
-
-
-/* ------------------------------------------------------------
-   SECURITY PANEL
-   ------------------------------------------------------------ */
-
-.nexora-contact-security {
-    padding: 5rem 0;
-}
-
-.nexora-security-panel {
-    padding: clamp(1.5rem, 5vw, 4rem);
-    border: 1px solid rgba(255,255,255,0.1);
     background:
-        linear-gradient(
-            135deg,
-            rgba(255,255,255,0.04),
-            rgba(255,255,255,0.015)
-        );
+        rgba(7, 13, 25, 0.82);
+
+    box-shadow:
+        var(--nexora-shadow-card);
 }
 
-.nexora-security-emblem {
-    width: 100px;
-    height: 100px;
-    margin: auto;
-    display: grid;
-    place-items: center;
-    border: 1px solid rgba(255,255,255,0.15);
-    font-size: 2.2rem;
+.nexora-contact-item {
+    display:
+        flex;
+
+    align-items:
+        flex-start;
+
+    gap:
+        0.9rem;
+
+    padding:
+        1rem 0;
+
+    border-bottom:
+        1px solid
+        var(--nexora-border-soft);
 }
 
-.nexora-security-panel h2 {
-    font-family: 'Orbitron', sans-serif;
+.nexora-contact-item:last-child {
+    border-bottom:
+        0;
 }
 
-.nexora-security-panel p {
-    opacity: 0.7;
-    line-height: 1.8;
-}
+.nexora-contact-icon {
+    flex:
+        0 0 40px;
 
-.nexora-pgp-card {
-    padding: 1.5rem;
-    border: 1px solid rgba(255,255,255,0.1);
-    text-align: center;
-}
+    display:
+        grid;
 
-.nexora-pgp-card span {
-    display: block;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
-    opacity: 0.5;
-    margin-bottom: 0.75rem;
-}
+    place-items:
+        center;
 
-.nexora-pgp-card strong {
-    display: block;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.5rem;
-}
+    width:
+        40px;
 
-.nexora-pgp-card code {
-    display: block;
-    margin-top: 0.5rem;
-}
+    height:
+        40px;
 
+    border:
+        1px solid
+        var(--nexora-border);
 
-/* ------------------------------------------------------------
-   FINAL CTA
-   ------------------------------------------------------------ */
+    border-radius:
+        10px;
 
-.nexora-contact-final {
-    padding: 7rem 0;
-}
+    color:
+        var(--nexora-primary);
 
-.nexora-final-symbol {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-.nexora-contact-final h2 {
-    font-family: 'Orbitron', sans-serif;
-    font-size: clamp(2rem, 5vw, 4rem);
-}
-
-.nexora-contact-final p {
-    max-width: 650px;
-    margin: 0 auto 2rem;
-    opacity: 0.65;
+    background:
+        rgba(110, 231, 255, 0.04);
 }
 
 
-/* ------------------------------------------------------------
-   RESPONSIVE
-   ------------------------------------------------------------ */
+/* ============================================================
+   32. COOKIE / NOTICE SYSTEM
+   ============================================================ */
+
+.nexora-notice {
+    position:
+        fixed;
+
+    left:
+        1rem;
+
+    right:
+        1rem;
+
+    bottom:
+        1rem;
+
+    z-index:
+        var(--z-overlay);
+
+    max-width:
+        680px;
+
+    margin-inline:
+        auto;
+
+    padding:
+        1rem;
+
+    border:
+        1px solid
+        var(--nexora-border);
+
+    border-radius:
+        var(--nexora-radius);
+
+    background:
+        rgba(4, 9, 18, 0.94);
+
+    box-shadow:
+        var(--nexora-shadow-deep);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
+}
+
+
+/* ============================================================
+   33. UTILITY CLASSES
+   ============================================================ */
+
+.nexora-display {
+    font-family:
+        var(--font-display);
+}
+
+.nexora-ui {
+    font-family:
+        var(--font-ui);
+}
+
+.nexora-body {
+    font-family:
+        var(--font-body);
+}
+
+.nexora-mono {
+    font-family:
+        var(--font-mono);
+
+    font-weight:
+        500;
+
+    letter-spacing:
+        var(--letter-mono);
+}
+
+.nexora-technical {
+    font-family:
+        var(--font-technical);
+}
+
+.nexora-text-primary {
+    color:
+        var(--nexora-primary);
+}
+
+.nexora-text-success {
+    color:
+        var(--nexora-success);
+}
+
+.nexora-text-warning {
+    color:
+        var(--nexora-warning);
+}
+
+.nexora-text-danger {
+    color:
+        var(--nexora-danger);
+}
+
+.nexora-text-muted {
+    color:
+        var(--nexora-text-muted);
+}
+
+.nexora-glow {
+    text-shadow:
+        var(--nexora-glow-primary);
+}
+
+.nexora-glow-purple {
+    text-shadow:
+        var(--nexora-glow-purple);
+}
+
+.nexora-hidden {
+    display:
+        none !important;
+}
+
+.nexora-no-select {
+    user-select:
+        none;
+}
+
+
+/* ============================================================
+   34. RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 1199.98px) {
+
+    :root {
+        --nexora-nav-height:
+            72px;
+    }
+
+    .nexora-hero {
+        min-height:
+            720px;
+    }
+
+    .nexora-contact-grid {
+        grid-template-columns:
+            1fr;
+    }
+}
+
+
+@media (max-width: 991.98px) {
+
+    .nexora-navbar {
+        backdrop-filter:
+            blur(14px);
+
+        -webkit-backdrop-filter:
+            blur(14px);
+    }
+
+    .nexora-hero-title {
+        font-size:
+            clamp(2.4rem, 9vw, 5rem);
+    }
+
+    .nexora-float-stage {
+        min-height:
+            500px;
+    }
+}
+
 
 @media (max-width: 767.98px) {
 
-    .nexora-contact-hero {
-        padding: 4rem 0;
+    :root {
+        --nexora-nav-height:
+            66px;
     }
 
-    .nexora-contact-main,
-    .nexora-contact-topics,
-    .nexora-social-section {
-        padding: 4rem 0;
+    body {
+        font-size:
+            0.96rem;
     }
 
-    .nexora-social-card {
-        flex-direction: column;
+    .nexora-container {
+        width:
+            min(
+                calc(100% - 1.25rem),
+                var(--nexora-container)
+            );
     }
 
-    .nexora-contact-side-card {
-        flex-direction: column;
+    .nexora-section {
+        padding-block:
+            3.5rem;
     }
 
+    .nexora-hero {
+        min-height:
+            680px;
+    }
+
+    .nexora-hero-title {
+        font-size:
+            clamp(2.2rem, 12vw, 4rem);
+    }
+
+    .nexora-heading-system::before {
+        left:
+            -0.65rem;
+
+        width:
+            3px;
+    }
+
+    .nexora-float-stage {
+        min-height:
+            420px;
+    }
+
+    .nexora-float-object--primary {
+        width:
+            82%;
+
+        left:
+            9%;
+    }
+
+    .nexora-float-object--secondary {
+        width:
+            48%;
+    }
+
+    .nexora-float-object--tertiary {
+        width:
+            38%;
+    }
+
+    .nexora-panel:hover,
+    .nexora-ai-card:hover {
+        transform:
+            none;
+    }
+
+    .nexora-footer-bottom {
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
 }
+
+
+@media (max-width: 575.98px) {
+
+    .nexora-hero {
+        min-height:
+            620px;
+    }
+
+    .nexora-hero-title {
+        font-size:
+            clamp(2rem, 13vw, 3.4rem);
+
+        letter-spacing:
+            -0.025em;
+    }
+
+    .nexora-float-stage {
+        min-height:
+            350px;
+    }
+
+    .nexora-float-object--primary {
+        width:
+            88%;
+
+        left:
+            6%;
+    }
+
+    .nexora-float-object--secondary {
+        width:
+            48%;
+    }
+
+    .nexora-float-object--tertiary {
+        width:
+            34%;
+    }
+
+    .nexora-terminal-content {
+        padding:
+            1rem;
+
+        font-size:
+            0.7rem;
+    }
+
+    .nexora-footer {
+        margin-top:
+            4rem;
+
+        padding-top:
+            3.5rem;
+    }
+}
+
+
+/* ============================================================
+   35. COARSE POINTER / TOUCH DEVICES
+   ============================================================ */
+
+@media (pointer: coarse) {
+
+    .nexora-magnetic,
+    .nexora-tilt {
+        transform:
+            none !important;
+    }
+
+    .nexora-float-object {
+        will-change:
+            auto;
+    }
+
+    .nexora-float-object:hover img {
+        transform:
+            none;
+
+        filter:
+            none;
+    }
+
+    .nexora-cursor {
+        display:
+            none !important;
+    }
+}
+
+
+/* ============================================================
+   36. REDUCED MOTION
+   ============================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+
+    html {
+        scroll-behavior:
+            auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration:
+            0.01ms !important;
+
+        animation-iteration-count:
+            1 !important;
+
+        transition-duration:
+            0.01ms !important;
+
+        scroll-behavior:
+            auto !important;
+    }
+
+    .nexora-environment::before,
+    .nexora-grid-field,
+    .nexora-float-object,
+    .nexora-glow-heading,
+    .nexora-signal-dot {
+        animation:
+            none !important;
+    }
+
+    .nexora-reveal {
+        opacity:
+            1;
+
+        transform:
+            none;
+    }
+
+    .nexora-float-object,
+    .nexora-tilt,
+    .nexora-magnetic {
+        transform:
+            none !important;
+    }
+}
+
+
+/* ============================================================
+   37. HIGH CONTRAST / FORCED COLORS
+   ============================================================ */
+
+@media (forced-colors: active) {
+
+    .nexora-panel,
+    .nexora-card,
+    .nexora-ai-card,
+    .nexora-button,
+    .nexora-input,
+    .nexora-textarea,
+    .nexora-select {
+        border:
+            1px solid CanvasText;
+
+        box-shadow:
+            none;
+    }
+
+    .nexora-signal-dot {
+        forced-color-adjust:
+            none;
+
+        background:
+            Highlight;
+    }
+}
+
+
+/* ============================================================
+   38. PRINT
+   ============================================================ */
+
+@media print {
+
+    .nexora-environment,
+    .nexora-cursor,
+    .nexora-grid-field,
+    .nexora-navbar,
+    .nexora-footer,
+    .nexora-float-object {
+        display:
+            none !important;
+    }
+
+    body {
+        overflow:
+            visible;
+
+        background:
+            #ffffff;
+
+        color:
+            #000000;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    p,
+    li {
+        color:
+            #000000;
+    }
+
+    .nexora-panel,
+    .nexora-card {
+        border:
+            1px solid #cccccc;
+
+        background:
+            #ffffff;
+
+        box-shadow:
+            none;
+    }
+}
+
+
+/* ============================================================
+   END OF NEXORA MAIN DESIGN SYSTEM
+   ============================================================ */

@@ -1,466 +1,521 @@
+```php
 <?php
 /**
  * Nexora Social Platform
- * ------------------------------------------------------------
- * File: includes/footer.php
- * Purpose: Global footer / application shutdown markup
- * ------------------------------------------------------------
+ * ============================================================
+ * GLOBAL FOOTER / SITE CLOSURE
  *
- * Dynamic behavior is intentionally delegated to:
- *
- *     /assets/js/functions.js
- *
- * Styling is delegated to:
- *
- *     /assets/css/main.css
- *
- * ------------------------------------------------------------
+ * Responsibilities:
+ * - Brand closure
+ * - Mission statement
+ * - Core navigation
+ * - Privacy/security principles
+ * - Contact channel
+ * - Client-only telemetry
+ * - Dynamic year
+ * - Back-to-top interaction
+ * - Progressive enhancement
+ * ============================================================
  */
 
 declare(strict_types=1);
 
-$currentYear = (int) date('Y');
+if (!defined('NEXORA_BOOTSTRAPPED')) {
+    http_response_code(403);
+    exit('Forbidden');
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Current Request
+|--------------------------------------------------------------------------
+*/
+
+$currentPath = parse_url(
+    $_SERVER['REQUEST_URI'] ?? '/',
+    PHP_URL_PATH
+);
+
+if (!is_string($currentPath) || $currentPath === '') {
+    $currentPath = '/';
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Authentication State
+|--------------------------------------------------------------------------
+*/
+
+$footerAuthenticated =
+    !empty($_SESSION['nexora_user']['id'])
+    ||
+    !empty($_SESSION['nexora_user_id'])
+    ||
+    !empty($_SESSION['user_id']);
 
 ?>
 
-```
-    </main>
+<!-- =========================================================
+     NEXORA GLOBAL FOOTER
+     ========================================================= -->
 
-    <!-- ================================================= -->
-    <!-- NEXORA FOOTER                                    -->
-    <!-- ================================================= -->
+<footer
+    id="nexora-footer"
+    class="nexora-footer"
+>
 
-    <footer
-        id="nexora-footer"
-        class="nexora-footer"
-        data-nexora-component="footer"
+
+    <!-- =====================================================
+         VISUAL SIGNAL
+         ===================================================== -->
+
+    <div
+        class="nexora-footer-signal"
+        aria-hidden="true"
     >
+        <span></span>
+    </div>
 
-        <!-- ============================================= -->
-        <!-- FOOTER SYSTEM STATUS                         -->
-        <!-- ============================================= -->
 
-        <div
-            class="nexora-footer-status"
-            aria-live="polite"
+    <div class="nexora-footer-shell">
+
+
+        <!-- =================================================
+             BRAND / MISSION
+             ================================================= -->
+
+        <section
+            class="nexora-footer-identity"
+            aria-labelledby="nexora-footer-title"
         >
 
-            <div class="container-fluid">
+            <div class="nexora-footer-brand">
 
-                <div class="nexora-system-status">
+                <span
+                    class="nexora-brand-mark"
+                    aria-hidden="true"
+                >
+                    NX
+                </span>
 
-                    <span
-                        class="nexora-status-indicator"
-                        id="nexora-status-indicator"
+                <div>
+
+                    <h2 id="nexora-footer-title">
+                        NEXORA
+                    </h2>
+
+                    <span>
+                        SOCIAL INFRASTRUCTURE
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <p class="nexora-footer-mission">
+
+                A privacy-first social environment built around
+                human connection, meaningful participation,
+                and security by design.
+
+            </p>
+
+
+            <!-- PRINCIPLES -->
+
+            <div
+                class="nexora-footer-principles"
+                aria-label="Nexora principles"
+            >
+
+                <span>
+
+                    <i
+                        class="fa-solid fa-shield-halved"
                         aria-hidden="true"
-                    ></span>
+                    ></i>
 
-                    <span
-                        id="nexora-system-status"
-                        data-nexora-live="system-status"
-                    >
-                        NEXORA SYSTEM ONLINE
-                    </span>
+                    Privacy by Design
 
-                    <span
-                        class="nexora-status-separator"
+                </span>
+
+
+                <span>
+
+                    <i
+                        class="fa-solid fa-ban"
                         aria-hidden="true"
-                    >
-                        //
+                    ></i>
+
+                    No Ads
+
+                </span>
+
+
+                <span>
+
+                    <i
+                        class="fa-solid fa-database"
+                        aria-hidden="true"
+                    ></i>
+
+                    No Data Selling
+
+                </span>
+
+
+                <span>
+
+                    <i
+                        class="fa-solid fa-lock"
+                        aria-hidden="true"
+                    ></i>
+
+                    Security First
+
+                </span>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             FOOTER NAVIGATION
+             ================================================= -->
+
+        <nav
+            class="nexora-footer-nav"
+            aria-label="Footer navigation"
+        >
+
+
+            <!-- EXPLORE -->
+
+            <div class="nexora-footer-nav-group">
+
+                <span class="nexora-footer-label">
+                    EXPLORE
+                </span>
+
+
+                <a
+                    href="/"
+                    <?= $currentPath === '/'
+                        ? 'aria-current="page"'
+                        : '' ?>
+                >
+                    Home
+                </a>
+
+
+                <a
+                    href="/about.php"
+                    <?= $currentPath === '/about.php'
+                        ? 'aria-current="page"'
+                        : '' ?>
+                >
+                    About Nexora
+                </a>
+
+
+                <a
+                    href="/contact.php"
+                    <?= $currentPath === '/contact.php'
+                        ? 'aria-current="page"'
+                        : '' ?>
+                >
+                    Contact Operations
+                </a>
+
+            </div>
+
+
+            <!-- IDENTITY -->
+
+            <div class="nexora-footer-nav-group">
+
+                <span class="nexora-footer-label">
+                    IDENTITY
+                </span>
+
+
+                <?php if ($footerAuthenticated): ?>
+
+                    <a href="/users/dashboard.php">
+                        Command Center
+                    </a>
+
+                    <a href="/users/profile.php">
+                        Profile
+                    </a>
+
+                    <a href="/users/friends.php">
+                        Network
+                    </a>
+
+                    <a href="/users/messages.php">
+                        Messages
+                    </a>
+
+                    <a href="/users/settings.php">
+                        Settings
+                    </a>
+
+                <?php else: ?>
+
+                    <a href="/login.php">
+                        Sign in
+                    </a>
+
+                    <a href="/register.php">
+                        Join Nexora
+                    </a>
+
+                <?php endif; ?>
+
+            </div>
+
+
+            <!-- PRINCIPLES -->
+
+            <div class="nexora-footer-nav-group">
+
+                <span class="nexora-footer-label">
+                    PRINCIPLES
+                </span>
+
+
+                <span class="nexora-footer-static">
+                    Privacy-first architecture
+                </span>
+
+
+                <span class="nexora-footer-static">
+                    Security-conscious design
+                </span>
+
+
+                <span class="nexora-footer-static">
+                    Human-centered connection
+                </span>
+
+
+                <span class="nexora-footer-static">
+                    No advertising model
+                </span>
+
+            </div>
+
+        </nav>
+
+
+        <!-- =================================================
+             CLIENT TELEMETRY
+             ================================================= -->
+
+        <section
+            class="nexora-footer-telemetry"
+            aria-labelledby="nexora-footer-telemetry-title"
+        >
+
+            <div class="nexora-footer-telemetry-head">
+
+                <div>
+
+                    <span class="nexora-footer-label">
+                        CLIENT TELEMETRY
                     </span>
 
-                    <span
-                        id="nexora-client-time"
-                        data-nexora-live="client-time"
-                    >
-                        Synchronizing...
-                    </span>
+                    <h3 id="nexora-footer-telemetry-title">
+                        Your browser
+                    </h3>
 
                 </div>
+
+
+                <span
+                    id="nexora-client-state"
+                    class="nexora-footer-client-state"
+                >
+
+                    <i aria-hidden="true"></i>
+
+                    DETECTING
+
+                </span>
+
+            </div>
+
+
+            <dl class="nexora-footer-telemetry-grid">
+
+
+                <!-- CONNECTION -->
+
+                <div>
+
+                    <dt>
+                        CONNECTION
+                    </dt>
+
+                    <dd id="nexora-footer-connection">
+                        —
+                    </dd>
+
+                </div>
+
+
+                <!-- TIME -->
+
+                <div>
+
+                    <dt>
+                        TIME
+                    </dt>
+
+                    <dd id="nexora-footer-time">
+                        —
+                    </dd>
+
+                </div>
+
+
+                <!-- ENGINE -->
+
+                <div>
+
+                    <dt>
+                        ENGINE
+                    </dt>
+
+                    <dd id="nexora-footer-engine">
+                        —
+                    </dd>
+
+                </div>
+
+
+                <!-- DISPLAY -->
+
+                <div>
+
+                    <dt>
+                        DISPLAY
+                    </dt>
+
+                    <dd id="nexora-footer-display">
+                        —
+                    </dd>
+
+                </div>
+
+
+            </dl>
+
+
+            <p class="nexora-footer-telemetry-note">
+
+                Client telemetry is generated locally by your
+                browser and is not presented here as a claim
+                about Nexora server health.
+
+            </p>
+
+        </section>
+
+    </div>
+
+
+    <!-- =====================================================
+         FOOTER BOTTOM BAR
+         ===================================================== -->
+
+    <div class="nexora-footer-bottom">
+
+        <div class="nexora-footer-bottom-inner">
+
+
+            <!-- LEGAL -->
+
+            <div class="nexora-footer-legal">
+
+                <span>
+
+                    ©
+
+                    <span id="nexora-footer-year">
+                        <?= e((string) date('Y')) ?>
+                    </span>
+
+                    Nexora
+
+                </span>
+
+
+                <span
+                    aria-hidden="true"
+                    class="nexora-footer-separator"
+                >
+                    /
+                </span>
+
+
+                <span>
+                    Built with privacy in mind.
+                </span>
+
+            </div>
+
+
+            <!-- SYSTEM / RETURN -->
+
+            <div class="nexora-footer-bottom-actions">
+
+
+                <span class="nexora-footer-build">
+
+                    <span>
+                        CLIENT
+                    </span>
+
+                    <code id="nexora-footer-build-value">
+                        NX-SHELL
+                    </code>
+
+                </span>
+
+
+                <button
+                    type="button"
+                    id="nexora-back-to-top"
+                    class="nexora-back-to-top"
+                    aria-label="Back to top"
+                    title="Back to top"
+                >
+
+                    <i
+                        class="fa-solid fa-arrow-up"
+                        aria-hidden="true"
+                    ></i>
+
+                </button>
 
             </div>
 
         </div>
 
-        <!-- ============================================= -->
-        <!-- FOOTER CONTENT                                -->
-        <!-- ============================================= -->
+    </div>
 
-        <div class="container-fluid nexora-footer-container">
+</footer>
 
-            <div class="row g-4">
 
-                <!-- ===================================== -->
-                <!-- BRAND / MISSION                       -->
-                <!-- ===================================== -->
+<!-- =========================================================
+     NEXORA SITE SHELL JAVASCRIPT
+     ========================================================= -->
 
-                <div class="col-12 col-lg-5">
-
-                    <section
-                        class="nexora-footer-section nexora-footer-brand"
-                        aria-labelledby="footer-brand-title"
-                    >
-
-                        <h2
-                            id="footer-brand-title"
-                            class="nexora-footer-title"
-                        >
-
-                            <i
-                                class="fa-solid fa-atom"
-                                aria-hidden="true"
-                            ></i>
-
-                            NEXORA
-
-                        </h2>
-
-                        <p class="nexora-footer-description">
-
-                            The next generation of social connection.
-
-                            A security-focused, futuristic community
-                            built around identity, communication,
-                            discovery, reputation, and human connection.
-
-                        </p>
-
-                        <div
-                            class="nexora-footer-tagline"
-                            aria-label="Nexora mission"
-                        >
-                            CONNECT BEYOND THE ORDINARY.
-                        </div>
-
-                    </section>
-
-                </div>
-
-                <!-- ===================================== -->
-                <!-- QUICK NAVIGATION                     -->
-                <!-- ===================================== -->
-
-                <div class="col-6 col-md-4 col-lg-2">
-
-                    <section
-                        class="nexora-footer-section"
-                        aria-labelledby="footer-navigation-title"
-                    >
-
-                        <h2
-                            id="footer-navigation-title"
-                            class="nexora-footer-heading"
-                        >
-                            Navigation
-                        </h2>
-
-                        <ul class="nexora-footer-links">
-
-                            <li>
-                                <a
-                                    href="/index.php"
-                                    data-nexora-footer-link="home"
-                                >
-                                    <i
-                                        class="fa-solid fa-angle-right"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Home
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/about.php"
-                                    data-nexora-footer-link="about"
-                                >
-                                    <i
-                                        class="fa-solid fa-angle-right"
-                                        aria-hidden="true"
-                                    ></i>
-                                    About
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/contact.php"
-                                    data-nexora-footer-link="contact"
-                                >
-                                    <i
-                                        class="fa-solid fa-angle-right"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Contact
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/login.php"
-                                    data-nexora-footer-link="login"
-                                >
-                                    <i
-                                        class="fa-solid fa-angle-right"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Login
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/register.php"
-                                    data-nexora-footer-link="register"
-                                >
-                                    <i
-                                        class="fa-solid fa-angle-right"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Register
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </section>
-
-                </div>
-
-                <!-- ===================================== -->
-                <!-- RESOURCES                             -->
-                <!-- ===================================== -->
-
-                <div class="col-6 col-md-4 col-lg-2">
-
-                    <section
-                        class="nexora-footer-section"
-                        aria-labelledby="footer-resources-title"
-                    >
-
-                        <h2
-                            id="footer-resources-title"
-                            class="nexora-footer-heading"
-                        >
-                            Resources
-                        </h2>
-
-                        <ul class="nexora-footer-links">
-
-                            <li>
-                                <a
-                                    href="/sitemap.xml"
-                                    rel="sitemap"
-                                    data-nexora-footer-link="sitemap"
-                                >
-                                    <i
-                                        class="fa-solid fa-sitemap"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Sitemap
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/about.php"
-                                    data-nexora-footer-link="project"
-                                >
-                                    <i
-                                        class="fa-solid fa-microchip"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Project
-                                </a>
-                            </li>
-
-                            <li>
-                                <a
-                                    href="/contact.php"
-                                    data-nexora-footer-link="support"
-                                >
-                                    <i
-                                        class="fa-solid fa-headset"
-                                        aria-hidden="true"
-                                    ></i>
-                                    Support
-                                </a>
-                            </li>
-
-                        </ul>
-
-                    </section>
-
-                </div>
-
-                <!-- ===================================== -->
-                <!-- LIVE TELEMETRY                       -->
-                <!-- ===================================== -->
-
-                <div class="col-12 col-md-4 col-lg-3">
-
-                    <section
-                        class="nexora-footer-section nexora-telemetry"
-                        aria-labelledby="footer-telemetry-title"
-                    >
-
-                        <h2
-                            id="footer-telemetry-title"
-                            class="nexora-footer-heading"
-                        >
-                            <i
-                                class="fa-solid fa-satellite"
-                                aria-hidden="true"
-                            ></i>
-
-                            Telemetry
-                        </h2>
-
-                        <div
-                            class="nexora-telemetry-panel"
-                            id="nexora-telemetry-panel"
-                            data-nexora-telemetry="footer"
-                        >
-
-                            <div class="nexora-telemetry-row">
-
-                                <span>
-                                    System
-                                </span>
-
-                                <strong
-                                    id="nexora-telemetry-system"
-                                >
-                                    ONLINE
-                                </strong>
-
-                            </div>
-
-                            <div class="nexora-telemetry-row">
-
-                                <span>
-                                    Interface
-                                </span>
-
-                                <strong
-                                    id="nexora-telemetry-interface"
-                                >
-                                    READY
-                                </strong>
-
-                            </div>
-
-                            <div class="nexora-telemetry-row">
-
-                                <span>
-                                    Connection
-                                </span>
-
-                                <strong
-                                    id="nexora-telemetry-connection"
-                                >
-                                    STANDBY
-                                </strong>
-
-                            </div>
-
-                            <div class="nexora-telemetry-row">
-
-                                <span>
-                                    Client
-                                </span>
-
-                                <strong
-                                    id="nexora-telemetry-client"
-                                >
-                                    WEB
-                                </strong>
-
-                            </div>
-
-                        </div>
-
-                    </section>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <!-- ============================================= -->
-        <!-- FOOTER COMMAND BAR                            -->
-        <!-- ============================================= -->
-
-        <div class="nexora-footer-command-bar">
-
-            <div class="container-fluid">
-
-                <div class="nexora-footer-command-content">
-
-                    <span
-                        class="nexora-footer-copyright"
-                        id="nexora-copyright"
-                    >
-                        &copy;
-                        <?= htmlspecialchars((string) $currentYear, ENT_QUOTES, 'UTF-8') ?>
-                        Nexora.
-                        All systems reserved.
-                    </span>
-
-                    <span
-                        class="nexora-footer-version"
-                        data-nexora-version="display"
-                    >
-                        NEXORA // CORE
-                    </span>
-
-                    <button
-                        type="button"
-                        id="nexora-back-to-top"
-                        class="nexora-back-to-top"
-                        aria-label="Return to the top of the page"
-                        data-nexora-action="back-to-top"
-                    >
-
-                        <span>
-                            Return to top
-                        </span>
-
-                        <i
-                            class="fa-solid fa-arrow-up"
-                            aria-hidden="true"
-                        ></i>
-
-                    </button>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </footer>
-
-</div>
-
-<!-- ===================================================== -->
-<!-- BOOTSTRAP JAVASCRIPT                                  -->
-<!-- ===================================================== -->
-
-<script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-></script>
-
-<!-- ===================================================== -->
-<!-- NEXORA JAVASCRIPT                                    -->
-<!-- ===================================================== -->
-<script src="/assets/js/contact.js" defer></script>
-<script
-    src="/assets/js/functions.js"
-    defer
-></script>
+<script src="/assets/js/site-shell.js" defer></script>
 ```
-
-</body>
-</html>
